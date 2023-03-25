@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TocAppDiscos</string>
+    <string name="titulo_actividad_principal">Pantalla principal</string>
+    <string name="BuscarVinilos_editText_hint">¡Busca tu vinilo favorito!</string>
+    <string name="BuscarVinilos_boton_texto">Buscar vinilo</string>
+</resources>
