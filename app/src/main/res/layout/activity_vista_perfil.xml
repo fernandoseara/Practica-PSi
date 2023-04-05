@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Profile section -->
+    <LinearLayout
+        android:id="@+id/profile_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Profile photo -->
+        <ImageView
+            android:id="@+id/vistaPerfil_foto_perfil"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"/>
+            <!--android:src="mipmap-hdpi/perfil_icono.png"-->
+
+        <!-- Name -->
+        <TextView
+            android:id="@+id/vistaPerfil_texto_nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="John Doe"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <!-- Email -->
+        <TextView
+            android:id="@+id/vistaPerfil_texto_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="john.doe@example.com"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="16sp" />
+
+        <!-- Other details -->
+        <TextView
+            android:id="@+id/vistaPerfil_texto_descripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et ante vitae magna aliquam dapibus."
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- "Lista de vinilos" text view -->
+    <TextView
+        android:id="@+id/lista_de_vinilos_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profile_section"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Lista de vinilos"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <!-- Vinyl section -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/vinilos_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lista_de_vinilos_textview"
+        android:padding="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:scrollbars="none"
+        android:clipToPadding="false"
+        android:background="@color/white" />
+
+</RelativeLayout>
+</layout>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "60411395119",
+    "project_id": "tocappdiscos",
+    "storage_bucket": "tocappdiscos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60411395119:android:61d5b2ff6ea4298361dada",
+        "android_client_info": {
+          "package_name": "es.udc.psi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60411395119-pd68shmh0g4q436b9fncfgo0o757d2qg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLez12_352kdvzjThE3MqLxBsrNJK8-xA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60411395119-pd68shmh0g4q436b9fncfgo0o757d2qg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
