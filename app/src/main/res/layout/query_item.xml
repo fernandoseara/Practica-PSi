@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="16dp">
+
+        <!-- Vinyl image -->
+        <ImageView
+            android:id="@+id/query_item_imagen"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+        <!--android:src=""-->
+
+        <!-- Vinyl name -->
+        <TextView
+            android:id="@+id/query_item_nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vinyl name"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+</layout>

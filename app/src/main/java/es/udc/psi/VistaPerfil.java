@@ -31,7 +31,7 @@ public class VistaPerfil extends AppCompatActivity {
         // Inicio recycler con 10 vinilos de prueba
         ArrayList<Vinilo> initialData = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            //initialData.add(new Vinilo("Prueba", , "Prueba"));
+            initialData.add(new Vinilo("Vinilo de Prueba (sin foto)", "Prueba"));
         }
         initRecycler(initialData);
     }
@@ -39,7 +39,7 @@ public class VistaPerfil extends AppCompatActivity {
     private void initRecycler(ArrayList<Vinilo> vinilos) {
         mAdapter = new ViniloAdapter(vinilos);
         LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
 
         binding.vinilosRv.setLayoutManager(linearLayoutManager);

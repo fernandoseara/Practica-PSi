@@ -1,11 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".VistaVinilo">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <!-- Sección de info -->
+        <LinearLayout
+            android:id="@+id/vistaVinilo_profileSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!--  Portada -->
+            <ImageView
+                android:id="@+id/vistaVinilo_portada"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"/>
+            <!--android:src="mipmap-hdpi/portada.png"-->
+
+            <!-- Nombre -->
+            <TextView
+                android:id="@+id/vistaVinilo_texto_nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Nombre del vinilo"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <!-- Artista(s) -->
+            <TextView
+                android:id="@+id/vistaVinilo_texto_artista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="Grupo o artista"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="16sp" />
+
+            <!-- Other details -->
+            <TextView
+                android:id="@+id/vistaVinilo_texto_descripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et ante vitae magna aliquam dapibus."
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Sección de botones -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/vistaVinilo_boton_añadirLista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Añadir a una lista de vinilos"
+                android:textSize="10sp"
+                android:layout_margin="20dp"/>
+
+            <Button
+                android:id="@+id/vistaVinilo_boton_compartir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Compartir"
+                android:layout_margin="20dp"/>
+            />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </layout>

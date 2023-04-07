@@ -1,5 +1,6 @@
 package es.udc.psi;
 
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,11 +9,17 @@ import androidx.annotation.NonNull;
 
 public class Vinilo implements Parcelable {
 
-    Image portada;
+    Drawable portada;
     String titulo;
     String description ;
 
-    public Vinilo(String titulo, Image portada, String description) {
+    public Vinilo(String titulo, Drawable portada, String description) {
+        this.titulo = titulo;
+        this.portada = portada;
+        this.description = description;
+    }
+
+    public Vinilo(String titulo, String description) {
         this.titulo = titulo;
         this.portada = portada;
         this.description = description;
@@ -52,11 +59,11 @@ public class Vinilo implements Parcelable {
         this.description = description;
     }
 
-    public Image getPortada() {
+    public Drawable getPortada() {
         return portada;
     }
 
-    public void setPortada(Image portada) {
+    public void setPortada(Drawable portada) {
         this.portada = portada;
     }
 

@@ -1,6 +1,5 @@
 package es.udc.psi;
 
-import android.service.autofill.Dataset;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ViniloAdapter extends RecyclerView.Adapter<ViniloAdapter.MyViewHolder>{
-    private final ArrayList<Vinilo> mDataset;
+public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyViewHolder>{
+    private final ArrayList<QueryItem> mDataset;
 
     public interface OnItemClickListener {
         public void onClick(View view, int position);
@@ -21,24 +20,26 @@ public class ViniloAdapter extends RecyclerView.Adapter<ViniloAdapter.MyViewHold
 
     private static OnItemClickListener clickListener;
     public void setClickListener(OnItemClickListener itemClickListener) {
-        this.clickListener = itemClickListener;
+        clickListener = itemClickListener;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        // TODO: Aqui poner la info que creamos conveniente sobre cada búsqueda
         public ImageView imagen;
-        public TextView nombre;
+        public TextView texto;
 
 
         public MyViewHolder(View view) {
             super(view);
-            imagen = view.findViewById(R.id.vinilo_item_imagen);
-            nombre = view.findViewById(R.id.vinilo_item_nombre);
+            imagen = view.findViewById(R.id.query_item_imagen);
+            texto = view.findViewById(R.id.query_item_nombre);
             view.setOnClickListener(this);
         }
 
-        public void bind(Vinilo article) {
-            imagen.setImageDrawable(article.getPortada());
-            nombre.setText(article.getTitulo());
+        public void bind(QueryItem article) {
+            imagen.setImageDrawable(article.getFoto());
+            texto.setText(article.getTexto());
         }
 
         @Override
@@ -47,16 +48,16 @@ public class ViniloAdapter extends RecyclerView.Adapter<ViniloAdapter.MyViewHold
         }
     }
 
-    public ViniloAdapter(ArrayList<Vinilo> myDataset) {
+    public QueryAdapter(ArrayList<QueryItem> myDataset) {
         mDataset = myDataset;
     }
 
     @NonNull
     @Override
-    public ViniloAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                          int viewType) {
+    public QueryAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                         int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.vinilo_item, parent, false);
+                .inflate(R.layout.query_item, parent, false);
         return new MyViewHolder(v);
     }
 
@@ -70,7 +71,7 @@ public class ViniloAdapter extends RecyclerView.Adapter<ViniloAdapter.MyViewHold
         return mDataset.size();
     }
 
-    public void addItem(Vinilo article) {
+    public void addItem(QueryItem article) {
         mDataset.add(article);
         notifyItemInserted(mDataset.size()-1);
     }
@@ -80,13 +81,13 @@ public class ViniloAdapter extends RecyclerView.Adapter<ViniloAdapter.MyViewHold
         notifyItemRemoved(position);
     }
 
-    public void editItem(Vinilo article, int position){
+    public void editItem(QueryItem article, int position){
         mDataset.remove(position);
         mDataset.add(position,article);
         notifyItemChanged(position);
     }
 
-    public Vinilo getItem(int position){
+    public QueryItem getItem(int position){
         return mDataset.get(position);
     }
 }

@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -30,8 +32,11 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        setup_buscarPerfiles();
+
+        setup_buscarVinilos();
 
         /*
 
@@ -44,6 +49,45 @@ public class MainActivity extends AppCompatActivity{
             throw new RuntimeException(e);
         }
         */
+    }
+
+    public void setup_buscarPerfiles(){
+
+        // Setup de buscar Perfiles
+        EditText buscarPerfiles_editText = binding.BuscarPerfilesEditText;
+        Button buscarPerfiles_boton = binding.BuscarPerfilesBoton;
+        buscarPerfiles_boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String texto = buscarPerfiles_editText.getText().toString();
+                // TODO: Hacer la query a la base de datos de Perfiles con ese texto
+
+                Intent intent = new Intent(MainActivity.this, ListaQuery.class);
+                // intent.putExtra( DATOS RECIBIDOS DE LA BD )
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void setup_buscarVinilos(){
+
+        // Setup de buscar Vinilos
+        EditText buscarVinilos_editText = binding.BuscarVinilosEditText;
+        Button buscarVinilos_boton = binding.BuscarVinilosBoton;
+        buscarVinilos_boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String texto = buscarVinilos_editText.getText().toString();
+                // TODO: Hacer la query a la base de datos de Vinilos con ese texto
+
+                Intent intent = new Intent(MainActivity.this, ListaQuery.class);
+                // intent.putExtra( DATOS RECIBIDOS DE LA BD )
+                startActivity(intent);
+
+            }
+        });
+
     }
 
     @Override
