@@ -3,4 +3,10 @@
     <string name="titulo_actividad_principal">Pantalla principal</string>
     <string name="BuscarVinilos_editText_hint">¡Busca tu vinilo favorito!</string>
     <string name="BuscarVinilos_boton_texto">Buscar vinilo</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="click_to_login">Click to login</string>
+    <string name="click_to_register">Click to register</string>
 </resources>
