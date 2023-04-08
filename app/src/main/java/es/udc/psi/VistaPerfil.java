@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 import es.udc.psi.databinding.ActivityVistaPerfilBinding;
@@ -55,6 +57,16 @@ public class VistaPerfil extends AppCompatActivity {
                 intent.putExtra(KEY_VINILO, mAdapter.getItem(pos));
                 intent.putExtra(KEY_POS, pos);
                 startActivityForResult(intent,1);
+            }
+        });
+
+        binding.logoutBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

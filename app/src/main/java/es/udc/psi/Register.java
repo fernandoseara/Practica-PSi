@@ -24,8 +24,21 @@ public class Register extends AppCompatActivity {
     /* TODO cambiar a binding */
     TextInputEditText editTextEmail, editTextPassword;
     Button buttonReg;
-    TextView textViewLogIn;
-    private FirebaseAuth mAuth;
+    TextView textViewLogin;
+    FirebaseAuth mAuth;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            /* TODO cambiar a la activity que queramos */
+            Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +47,12 @@ public class Register extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        editTextEmail = findViewById(R.id.email);
-        editTextPassword = findViewById(R.id.password);
+        editTextEmail = findViewById(R.id.email_reg);
+        editTextPassword = findViewById(R.id.password_reg);
         buttonReg = findViewById(R.id.register_but);
-        textViewLogIn = findViewById(R.id.loginNow);
+        textViewLogin = findViewById(R.id.loginNow);
 
-        textViewLogIn.setOnClickListener(new View.OnClickListener() {
+        textViewLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Login.class);
@@ -70,9 +83,12 @@ public class Register extends AppCompatActivity {
                                         // FirebaseUser user = mAuth.getCurrentUser();
                                         Toast.makeText(Register.this, "Authentication successful.",
                                                 Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
+                                        startActivity(intent);
+                                        finish();
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        //Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                        Log.w("TAG", "createUserWithEmail:failure", task.getException());
                                         Toast.makeText(Register.this, "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
                                     }

@@ -19,6 +19,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -27,6 +30,8 @@ import es.udc.psi.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding binding;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,13 +109,22 @@ public class MainActivity extends AppCompatActivity{
 
             case R.id.perfil:
 
-                // Clicado item de Perfil -> Lanzar la actividad de ver perfil propio.
-                Intent intent = new Intent(this, VistaPerfil.class);
+                // Clicado item de Perfil -> Lanzar la actividad de ver perfil propio, si no hay
+                // sesion iniciada se inicia.
 
-                // Seguramente querramos mandarle las claves para buscar el perfil en la BD aqui
-                //intent.putExtra("ID", "Jose Carlos");
+                auth = FirebaseAuth.getInstance();
+                user = auth.getCurrentUser();
+                if (user == null) {
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, VistaPerfil.class);
 
-                startActivity(intent);
+                    // Seguramente querramos mandarle las claves para buscar el perfil en la BD aqui
+                    //intent.putExtra("ID", "Jose Carlos");
+
+                    startActivity(intent);
+                }
 
                 return true;
 

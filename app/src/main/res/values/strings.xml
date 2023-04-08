@@ -11,4 +11,5 @@
     <string name="click_to_register">Click to register</string>
     <string name="BuscarPerfiles_editText_texto">Busca a alguien por su nombre de usuario</string>
     <string name="BuscarPerfiles_boton_texto">Buscar Perfil</string>
+    <string name="logout">Logout</string>
 </resources>
