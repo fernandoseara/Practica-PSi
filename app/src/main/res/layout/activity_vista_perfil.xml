@@ -17,8 +17,8 @@
             android:id="@+id/vistaPerfil_foto_perfil"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"/>
-            <!--android:src="mipmap-hdpi/perfil_icono.png"-->
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/fotoperfil_prueba"/>
 
         <!-- Name -->
         <TextView

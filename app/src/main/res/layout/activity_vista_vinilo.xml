@@ -20,8 +20,8 @@
                 android:id="@+id/vistaVinilo_portada"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"/>
-            <!--android:src="mipmap-hdpi/portada.png"-->
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/portada_prueba"/>
 
             <!-- Nombre -->
             <TextView
@@ -68,7 +68,7 @@
                 android:id="@+id/vistaVinilo_boton_añadirLista"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Añadir a una lista de vinilos"
+                android:text="@string/vistaVinilo_boton_añadirLista"
                 android:textSize="10sp"
                 android:layout_margin="20dp"/>
 
@@ -76,9 +76,9 @@
                 android:id="@+id/vistaVinilo_boton_compartir"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Compartir"
-                android:layout_margin="20dp"/>
-            />
+                android:text="@string/vistaVinilo_boton_compartir"
+                android:layout_margin="20dp"
+                android:onClick="compartirVinilo"/>
 
         </LinearLayout>
 

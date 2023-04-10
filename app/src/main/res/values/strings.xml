@@ -12,4 +12,6 @@
     <string name="BuscarPerfiles_editText_texto">Busca a alguien por su nombre de usuario</string>
     <string name="BuscarPerfiles_boton_texto">Buscar Perfil</string>
     <string name="logout">Logout</string>
+    <string name="vistaVinilo_boton_compartir">Compartir</string>
+    <string name="vistaVinilo_boton_añadirLista">Añadir a una lista de vinilos</string>
 </resources>

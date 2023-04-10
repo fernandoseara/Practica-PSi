@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import es.udc.psi.databinding.ActivityListaQueryBinding;
 import es.udc.psi.databinding.ActivityVistaPerfilBinding;
@@ -20,6 +22,7 @@ public class ListaQuery extends AppCompatActivity {
     private QueryAdapter mAdapter;
     private final String KEY_ITEM = "contrasena";
     private final String KEY_POS = "sdjnv";
+    private String modo = "Vinilo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +30,13 @@ public class ListaQuery extends AppCompatActivity {
         setContentView(R.layout.activity_lista_query);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_lista_query);
 
+        Intent intent = getIntent();
+        this.modo = intent.getExtras().get("modo").toString();
+
         // Inicio recycler con 10 items de prueba
         ArrayList<QueryItem> initialData = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            initialData.add(new QueryItem("Vinilo de prueba (sin foto) " + i));
+            initialData.add(new QueryItem( modo + " de prueba (sin foto) " + i));
         }
         initRecycler(initialData);
     }
@@ -48,8 +54,11 @@ public class ListaQuery extends AppCompatActivity {
             public void onClick(View view, int pos) {
                 Log.d("_TAG", " Item " + pos );
 
-                // TODO: Si perfil, lanza VistaPerfil.class. Si vinilo, lanza VistaVinilo.class
-                Intent intent = new Intent(getApplicationContext(), VistaVinilo.class);
+                Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
+
+                if (Objects.equals(modo, "Vinilo")) {
+                    intent = new Intent(getApplicationContext(), VistaVinilo.class);
+                }
 
                 intent.putExtra(KEY_ITEM, mAdapter.getItem(pos));
                 intent.putExtra(KEY_POS, pos);

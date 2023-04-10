@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity{
                 // TODO: Hacer la query a la base de datos de Perfiles con ese texto
 
                 Intent intent = new Intent(MainActivity.this, ListaQuery.class);
+                intent.putExtra("modo", "Perfil");
                 // intent.putExtra( DATOS RECIBIDOS DE LA BD )
                 startActivity(intent);
             }
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity{
                 // TODO: Hacer la query a la base de datos de Vinilos con ese texto
 
                 Intent intent = new Intent(MainActivity.this, ListaQuery.class);
+                intent.putExtra("modo", "Vinilo");
                 // intent.putExtra( DATOS RECIBIDOS DE LA BD )
                 startActivity(intent);
 
