@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity{
                 String texto = buscarVinilos_editText.getText().toString();
 
                 db.collection("vinilos")
-                        .whereEqualTo("nombre", texto)
+                        .whereGreaterThanOrEqualTo("nombre", texto)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -94,15 +94,14 @@ public class MainActivity extends AppCompatActivity{
                                     Intent intent = new Intent(MainActivity.this, ListaQuery.class);
                                     intent.putExtra("modo", "Vinilo");
 
-                                    for(QueryDocumentSnapshot doc : task.getResult()){
-                                        ArrayList<QueryItem> arrayVinilos = new ArrayList<>();
+                                    ArrayList<QueryItem> arrayVinilos = new ArrayList<>();
 
-                                        for(int i = 0; i < task.getResult().size(); i++){
-                                            arrayVinilos.add(new QueryItem(doc.get("nombre").toString()));
-                                            Log.d("_TAG", "Paso a la lista " + doc.get("nombre").toString());
-                                        }
-                                        intent.putParcelableArrayListExtra("resultado", arrayVinilos);
+                                    for(QueryDocumentSnapshot doc : task.getResult()){
+
+                                        arrayVinilos.add(new QueryItem(doc.get("nombre").toString()));
+                                        Log.d("_TAG", "Paso a la lista " + doc.get("nombre").toString());
                                     }
+                                    intent.putParcelableArrayListExtra("resultado", arrayVinilos);
                                     startActivity(intent);
 
                                 } else {

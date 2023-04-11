@@ -11,6 +11,8 @@ public class QueryItem implements Parcelable {
     Drawable foto;
     String texto;
 
+    String artista;
+
 
     public QueryItem(String texto, Drawable foto) {
         this.texto = texto;

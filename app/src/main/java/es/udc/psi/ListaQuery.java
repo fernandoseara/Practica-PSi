@@ -39,6 +39,8 @@ public class ListaQuery extends AppCompatActivity {
 
         ArrayList<QueryItem> lista = intent.getParcelableArrayListExtra("resultado");
 
+        System.out.println(lista);
+
         // Inicio recycler con items recibidos en llamada.
         ArrayList<QueryItem> initialData;
         if(lista != null)   { initialData = lista; }
