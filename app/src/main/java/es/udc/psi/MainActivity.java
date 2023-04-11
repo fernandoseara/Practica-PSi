@@ -87,26 +87,24 @@ public class MainActivity extends AppCompatActivity{
                 db.collection("vinilos")
                         .whereGreaterThanOrEqualTo("nombre", texto)
                         .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    Intent intent = new Intent(MainActivity.this, ListaQuery.class);
-                                    intent.putExtra("modo", "Vinilo");
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Intent intent = new Intent(MainActivity.this, ListaQuery.class);
+                                intent.putExtra("busqueda", texto);
+                                intent.putExtra("modo", "Vinilo");
 
-                                    ArrayList<QueryItem> arrayVinilos = new ArrayList<>();
+                                ArrayList<QueryItem> arrayVinilos = new ArrayList<>();
 
-                                    for(QueryDocumentSnapshot doc : task.getResult()){
+                                for(QueryDocumentSnapshot doc : task.getResult()){
 
-                                        arrayVinilos.add(new QueryItem(doc.get("nombre").toString()));
-                                        Log.d("_TAG", "Paso a la lista " + doc.get("nombre").toString());
-                                    }
-                                    intent.putParcelableArrayListExtra("resultado", arrayVinilos);
-                                    startActivity(intent);
-
-                                } else {
-                                    Log.d("_TAG", "Error getting documents: ", task.getException());
+                                    arrayVinilos.add(new QueryItem(doc.get("nombre").toString(), doc.get("artista").toString()));
+                                    Log.d("_TAG", "Paso a la lista " + doc.get("nombre").toString());
                                 }
+                                intent.putParcelableArrayListExtra("resultado", arrayVinilos);
+                                startActivity(intent);
+
+                            } else {
+                                Log.d("_TAG", "Error getting documents: ", task.getException());
                             }
                         });
 

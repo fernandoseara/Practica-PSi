@@ -2,6 +2,7 @@ package es.udc.psi;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
@@ -37,6 +38,9 @@ public class ListaQuery extends AppCompatActivity {
         Intent intent = getIntent();
         this.modo = intent.getStringExtra("modo");
 
+        String texto_busqueda = "Resultados de la búsqueda:  " + intent.getStringExtra("busqueda");
+        binding.listaQueryTermino.setText(texto_busqueda);
+
         ArrayList<QueryItem> lista = intent.getParcelableArrayListExtra("resultado");
 
         System.out.println(lista);
@@ -59,6 +63,7 @@ public class ListaQuery extends AppCompatActivity {
 
         binding.queryRv.setLayoutManager(linearLayoutManager);
         binding.queryRv.setAdapter(mAdapter);
+        binding.queryRv.addItemDecoration(new DividerItemDecoration(binding.queryRv.getContext(), DividerItemDecoration.VERTICAL));
 
         mAdapter.setClickListener(new QueryAdapter.OnItemClickListener() {
             @Override

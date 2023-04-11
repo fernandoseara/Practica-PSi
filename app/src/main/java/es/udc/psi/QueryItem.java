@@ -25,8 +25,22 @@ public class QueryItem implements Parcelable {
         this.foto = null;
     }
 
+    public QueryItem(String texto, String artista) {
+        this.texto = texto;
+        this.artista = artista;
+
+    }
+
+    public QueryItem(String texto, String artista, Drawable foto) {
+        this.texto = texto;
+        this.artista = artista;
+        this.foto = foto;
+
+    }
+
     protected QueryItem(Parcel in) {
         texto = in.readString();
+        artista = in.readString();
         //portada = in.read();      // TODO: Habria que ver como se haria esto
 
     }
@@ -51,6 +65,14 @@ public class QueryItem implements Parcelable {
         this.texto = texto;
     }
 
+    public String getArtista() {
+        return this.artista;
+    }
+
+    public void setArtista(String texto) {
+        this.artista = texto;
+    }
+
     public Drawable getFoto() {
         return foto;
     }
@@ -67,6 +89,7 @@ public class QueryItem implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(texto);
+        parcel.writeString(artista);
         // parcel. TODO: meter imagen de alguna forma
 
     }

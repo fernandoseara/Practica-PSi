@@ -29,17 +29,21 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyViewHolder
         public ImageView imagen;
         public TextView texto;
 
+        public TextView artista;
+
 
         public MyViewHolder(View view) {
             super(view);
             imagen = view.findViewById(R.id.query_item_imagen);
             texto = view.findViewById(R.id.query_item_nombre);
+            artista = view.findViewById(R.id.query_item_artista);
             view.setOnClickListener(this);
         }
 
         public void bind(QueryItem article) {
             imagen.setImageDrawable(article.getFoto());
             texto.setText(article.getTexto());
+            artista.setText(article.getArtista());
         }
 
         @Override

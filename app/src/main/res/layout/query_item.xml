@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_marginEnd="16dp">
 
-        <!-- Vinyl image -->
+        <!-- Portada -->
         <ImageView
             android:id="@+id/query_item_imagen"
             android:layout_width="100dp"
-            android:layout_height="100dp"/>
-        <!--android:src=""-->
+            android:layout_height="100dp"
+            android:src="@drawable/portada_prueba"
+            android:layout_margin="10dp" />
 
-        <!-- Vinyl name -->
-        <TextView
-            android:id="@+id/query_item_nombre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vinyl name"
-            android:textColor="@color/black"/>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="20dp"
+            android:layout_marginTop="20dp">
 
+            <!-- Nombre -->
+            <TextView
+                android:id="@+id/query_item_nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
+            <!-- Artista -->
+            <TextView
+                android:id="@+id/query_item_artista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Artista"
+                android:textColor="@color/gray"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="10sp"/>
+
+        </LinearLayout>
     </LinearLayout>
 </layout>
