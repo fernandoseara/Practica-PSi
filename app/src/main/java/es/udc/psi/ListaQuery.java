@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 import es.udc.psi.databinding.ActivityListaQueryBinding;
@@ -30,11 +33,17 @@ public class ListaQuery extends AppCompatActivity {
         setContentView(R.layout.activity_lista_query);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_lista_query);
 
+        // Recibo la info que me da MainActivity
         Intent intent = getIntent();
-        this.modo = intent.getExtras().get("modo").toString();
+        this.modo = intent.getStringExtra("modo");
 
-        // Inicio recycler con 10 items de prueba
-        ArrayList<QueryItem> initialData = new ArrayList<>();
+        ArrayList<QueryItem> lista = intent.getParcelableArrayListExtra("resultado");
+
+        // Inicio recycler con items recibidos en llamada.
+        ArrayList<QueryItem> initialData;
+        if(lista != null)   { initialData = lista; }
+        else                { initialData = new ArrayList<>();};
+
         for (int i = 0; i < 10; i++) {
             initialData.add(new QueryItem( modo + " de prueba (sin foto) " + i));
         }

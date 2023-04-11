@@ -1,5 +1,6 @@
 package es.udc.psi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,11 +21,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import es.udc.psi.databinding.ActivityMainBinding;
 
@@ -32,6 +40,8 @@ public class MainActivity extends AppCompatActivity{
     private ActivityMainBinding binding;
     private FirebaseAuth auth;
     private FirebaseUser user;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +52,6 @@ public class MainActivity extends AppCompatActivity{
         setup_buscarPerfiles();
 
         setup_buscarVinilos();
-
-        /*
-
-        TODO: Asi parece que se pueden manejar las imagenes
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream(getAssets().open("image.png"));
-            ImageView imageView = binding.;
-            imageView.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        */
     }
 
     public void setup_buscarPerfiles(){
@@ -85,12 +83,33 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
 
                 String texto = buscarVinilos_editText.getText().toString();
-                // TODO: Hacer la query a la base de datos de Vinilos con ese texto
 
-                Intent intent = new Intent(MainActivity.this, ListaQuery.class);
-                intent.putExtra("modo", "Vinilo");
-                // intent.putExtra( DATOS RECIBIDOS DE LA BD )
-                startActivity(intent);
+                db.collection("vinilos")
+                        .whereEqualTo("nombre", texto)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    Intent intent = new Intent(MainActivity.this, ListaQuery.class);
+                                    intent.putExtra("modo", "Vinilo");
+
+                                    for(QueryDocumentSnapshot doc : task.getResult()){
+                                        ArrayList<QueryItem> arrayVinilos = new ArrayList<>();
+
+                                        for(int i = 0; i < task.getResult().size(); i++){
+                                            arrayVinilos.add(new QueryItem(doc.get("nombre").toString()));
+                                            Log.d("_TAG", "Paso a la lista " + doc.get("nombre").toString());
+                                        }
+                                        intent.putParcelableArrayListExtra("resultado", arrayVinilos);
+                                    }
+                                    startActivity(intent);
+
+                                } else {
+                                    Log.d("_TAG", "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
 
             }
         });
