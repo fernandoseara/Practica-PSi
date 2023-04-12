@@ -14,4 +14,7 @@
     <string name="logout">Logout</string>
     <string name="vistaVinilo_boton_compartir">Compartir</string>
     <string name="vistaVinilo_boton_añadirLista">Añadir a una lista de vinilos</string>
+    <string name="name">Name</string>
+    <string name="lastname">Lastname</string>
+    <string name="description">Description</string>
 </resources>
