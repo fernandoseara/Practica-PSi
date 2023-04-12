@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -63,6 +64,11 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 String texto = buscarPerfiles_editText.getText().toString();
+                if(texto.equals("")){
+                    Toast.makeText(MainActivity.this, "Por favor, pon algo en el texto editable", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // TODO: Hacer la query a la base de datos de Perfiles con ese texto
 
                 Intent intent = new Intent(MainActivity.this, ListaQuery.class);
@@ -83,6 +89,11 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
 
                 String texto = buscarVinilos_editText.getText().toString();
+
+                if(texto.equals("")){
+                    Toast.makeText(MainActivity.this, "Por favor, pon algo en el texto editable", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 db.collection("vinilos")
                         .whereGreaterThanOrEqualTo("nombre", texto)
