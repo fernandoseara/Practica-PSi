@@ -50,9 +50,6 @@ public class ListaQuery extends AppCompatActivity {
         if(lista != null)   { initialData = lista; }
         else                { initialData = new ArrayList<>();};
 
-        for (int i = 0; i < 10; i++) {
-            initialData.add(new QueryItem( modo + " de prueba (sin foto) " + i));
-        }
         initRecycler(initialData);
     }
 

@@ -50,13 +50,11 @@ public class VistaVinilo extends AppCompatActivity {
 
     public void compartirVinilo(View view){
 
-        // TODO: Llamada a la BD aquí
-
         String textoACompartir = artista + " - " + nombre + " (" + sello + ")";
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, textoACompartir);
-        startActivity(Intent.createChooser(intent, "Compartir usando"));
+        startActivity(Intent.createChooser(intent, "Compartir usando..."));
 
     }
 }
