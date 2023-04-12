@@ -6,17 +6,26 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import es.udc.psi.databinding.ActivityVistaPerfilBinding;
@@ -29,6 +38,7 @@ public class VistaPerfil extends AppCompatActivity {
     private final String KEY_VINILO = "contrasena";
     private final String KEY_POS = "sdjnv";
     private DatabaseReference mDatabase;
+    private StorageReference mStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +52,9 @@ public class VistaPerfil extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    binding.vistaPerfilTextoNombre.setText(snapshot.child("name").getValue()
-                            .toString());
+                    String fullname = snapshot.child("name").getValue().toString() + " " +
+                            snapshot.child("lastname").getValue().toString();
+                    binding.vistaPerfilTextoNombre.setText(fullname);
                     binding.vistaPerfilTextoEmail.setText(snapshot.child("email").getValue()
                             .toString());
                     binding.vistaPerfilTextoDescripcion.setText(snapshot.child("description").getValue()
@@ -56,6 +67,23 @@ public class VistaPerfil extends AppCompatActivity {
 
             }
         });
+        mStorage = FirebaseStorage.getInstance().getReference();
+        StorageReference photoReference = mStorage.child("profilePhotos/" +
+                FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+
+        try {
+            File localFile = File.createTempFile("profile",".jpg");
+            photoReference.getFile(localFile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    binding.vistaPerfilFotoPerfil.setImageBitmap(bitmap);
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         // Inicio recycler con 10 vinilos de prueba
 
