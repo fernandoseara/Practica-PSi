@@ -42,18 +42,27 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
                 android:text="Grupo o artista"
-                android:textColor="@color/cardview_dark_background"
+                android:textColor="@color/gray"
                 android:textSize="16sp" />
 
-            <!-- Other details -->
+            <!-- Género -->
             <TextView
-                android:id="@+id/vistaVinilo_texto_descripcion"
+                android:id="@+id/vistaVinilo_texto_genero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et ante vitae magna aliquam dapibus."
-                android:textColor="@color/cardview_dark_background"
+                android:textColor="@color/gray"
+                android:textSize="14sp" />
+
+            <!-- Sello -->
+            <TextView
+                android:id="@+id/vistaVinilo_texto_sello"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et ante vitae magna aliquam dapibus."
+                android:textColor="@color/gray"
                 android:textSize="14sp" />
 
         </LinearLayout>

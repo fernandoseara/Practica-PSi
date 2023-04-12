@@ -108,7 +108,11 @@ public class MainActivity extends AppCompatActivity{
 
                                 for(QueryDocumentSnapshot doc : task.getResult()){
 
-                                    arrayVinilos.add(new QueryItem(doc.get("nombre").toString(), doc.get("artista").toString()));
+                                    arrayVinilos.add(new QueryItem(doc.get("nombre").toString(),
+                                                                    doc.get("artista").toString(),
+                                                                    doc.get("sello").toString(),
+                                                                    doc.get("genero").toString()));
+
                                     Log.d("_TAG", "Paso a la lista " + doc.get("nombre").toString());
                                 }
                                 intent.putParcelableArrayListExtra("resultado", arrayVinilos);

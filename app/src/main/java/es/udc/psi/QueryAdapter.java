@@ -42,7 +42,7 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyViewHolder
 
         public void bind(QueryItem article) {
             imagen.setImageDrawable(article.getFoto());
-            texto.setText(article.getTexto());
+            texto.setText(article.getNombre());
             artista.setText(article.getArtista());
         }
 

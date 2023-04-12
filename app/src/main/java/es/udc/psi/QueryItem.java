@@ -8,39 +8,34 @@ import androidx.annotation.NonNull;
 
 public class QueryItem implements Parcelable {
 
+    // Atributos de Vinilo
     Drawable foto;
-    String texto;
-
+    String nombre;
     String artista;
+    String sello;
+    String genero;
 
+    // Atributos de Perfil
+    String descripcion;
 
-    public QueryItem(String texto, Drawable foto) {
-        this.texto = texto;
-        this.foto = foto;
-
-    }
-
-    public QueryItem(String texto) {
-        this.texto = texto;
+    public QueryItem(String nombre) {
+        this.nombre = nombre;
         this.foto = null;
     }
 
-    public QueryItem(String texto, String artista) {
-        this.texto = texto;
+    // Forma estándar de definir vinilos
+    public QueryItem(String nombre, String artista, String sello, String genero) {
+        this.nombre = nombre;
         this.artista = artista;
-
-    }
-
-    public QueryItem(String texto, String artista, Drawable foto) {
-        this.texto = texto;
-        this.artista = artista;
-        this.foto = foto;
-
+        this.sello = sello;
+        this.genero = genero;
     }
 
     protected QueryItem(Parcel in) {
-        texto = in.readString();
+        nombre = in.readString();
         artista = in.readString();
+        sello = in.readString();
+        genero = in.readString();
         //portada = in.read();      // TODO: Habria que ver como se haria esto
 
     }
@@ -57,12 +52,12 @@ public class QueryItem implements Parcelable {
         }
     };
 
-    public String getTexto() {
-        return texto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setTexto(String texto) {
-        this.texto = texto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getArtista() {
@@ -81,6 +76,22 @@ public class QueryItem implements Parcelable {
         this.foto = foto;
     }
 
+    public String getSello() {
+        return sello;
+    }
+
+    public void setSello(String sello) {
+        this.sello = sello;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -88,8 +99,10 @@ public class QueryItem implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeString(texto);
+        parcel.writeString(nombre);
         parcel.writeString(artista);
+        parcel.writeString(sello);
+        parcel.writeString(genero);
         // parcel. TODO: meter imagen de alguna forma
 
     }

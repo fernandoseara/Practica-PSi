@@ -65,21 +65,23 @@ public class ListaQuery extends AppCompatActivity {
         binding.queryRv.setAdapter(mAdapter);
         binding.queryRv.addItemDecoration(new DividerItemDecoration(binding.queryRv.getContext(), DividerItemDecoration.VERTICAL));
 
-        mAdapter.setClickListener(new QueryAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(View view, int pos) {
-                Log.d("_TAG", " Item " + pos );
+        mAdapter.setClickListener((view, pos) -> {
+            Log.d("_TAG", " Item " + pos );
 
-                Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
+            Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
 
-                if (Objects.equals(modo, "Vinilo")) {
-                    intent = new Intent(getApplicationContext(), VistaVinilo.class);
-                }
-
-                intent.putExtra(KEY_ITEM, mAdapter.getItem(pos));
-                intent.putExtra(KEY_POS, pos);
-                startActivity(intent);
+            if (Objects.equals(modo, "Vinilo")) {
+                intent = new Intent(getApplicationContext(), VistaVinilo.class);
             }
+
+            // Esto parece muy raro pero es la forma más cómoda de mandar el item
+            ArrayList<QueryItem> query_item_envio = new ArrayList<>();
+            query_item_envio.add(mAdapter.getItem(pos));
+            intent.putParcelableArrayListExtra(KEY_ITEM, query_item_envio);
+
+
+            intent.putExtra(KEY_POS, pos);
+            startActivity(intent);
         });
     }
 }
