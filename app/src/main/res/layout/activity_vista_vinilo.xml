@@ -18,10 +18,11 @@
             <!--  Portada -->
             <ImageView
                 android:id="@+id/vistaVinilo_portada"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/portada_prueba"/>
+                android:src="@drawable/portada_prueba"
+                android:scaleType="fitXY"/>
 
             <!-- Nombre -->
             <TextView
