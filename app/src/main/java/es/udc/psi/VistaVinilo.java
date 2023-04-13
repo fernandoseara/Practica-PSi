@@ -1,11 +1,19 @@
 package es.udc.psi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -44,8 +52,24 @@ public class VistaVinilo extends AppCompatActivity {
         binding.vistaViniloTextoGenero.setText("Género: " + genero);
         binding.vistaViniloTextoSello.setText("Sello: " + sello);
 
-        // TODO: Recoger la foto y ponerla
-        //binding.vistaViniloPortada.setImageDrawable( noseque );
+
+        // Portada (es un poco más largo)
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference photoReference= storageReference.child("portadas/" + item.getId() + ".jpg");
+        photoReference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                binding.vistaViniloPortada.setImageBitmap(bmp);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                binding.vistaViniloPortada.setImageBitmap(null);
+            }
+        });
+
     }
 
     public void compartirVinilo(View view){

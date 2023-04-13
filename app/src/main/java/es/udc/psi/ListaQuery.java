@@ -71,7 +71,7 @@ public class ListaQuery extends AppCompatActivity {
                 intent = new Intent(getApplicationContext(), VistaVinilo.class);
             }
 
-            // Esto parece muy raro pero es la forma más cómoda de mandar el item
+            // Esto parece raro pero es la forma más cómoda de mandar el item
             ArrayList<QueryItem> query_item_envio = new ArrayList<>();
             query_item_envio.add(mAdapter.getItem(pos));
             intent.putParcelableArrayListExtra(KEY_ITEM, query_item_envio);
