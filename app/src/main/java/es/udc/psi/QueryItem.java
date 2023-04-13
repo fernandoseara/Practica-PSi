@@ -14,17 +14,14 @@ public class QueryItem implements Parcelable {
     String artista;
     String sello;
     String genero;
+    String id;
 
     // Atributos de Perfil
     String descripcion;
 
-    public QueryItem(String nombre) {
-        this.nombre = nombre;
-        this.foto = null;
-    }
-
     // Forma estándar de definir vinilos
-    public QueryItem(String nombre, String artista, String sello, String genero) {
+    public QueryItem(String id, String nombre, String artista, String sello, String genero) {
+        this.id = id;
         this.nombre = nombre;
         this.artista = artista;
         this.sello = sello;
@@ -36,6 +33,7 @@ public class QueryItem implements Parcelable {
         artista = in.readString();
         sello = in.readString();
         genero = in.readString();
+        id = in.readString();
         //portada = in.read();      // TODO: Habria que ver como se haria esto
 
     }
@@ -92,6 +90,13 @@ public class QueryItem implements Parcelable {
         this.genero = genero;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
     @Override
     public int describeContents() {
         return 0;
@@ -103,6 +108,7 @@ public class QueryItem implements Parcelable {
         parcel.writeString(artista);
         parcel.writeString(sello);
         parcel.writeString(genero);
+        parcel.writeString(id);
         // parcel. TODO: meter imagen de alguna forma
 
     }

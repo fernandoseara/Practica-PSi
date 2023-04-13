@@ -1,13 +1,22 @@
 package es.udc.psi;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -28,7 +37,6 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyViewHolder
         // TODO: Aqui poner la info que creamos conveniente sobre cada búsqueda
         public ImageView imagen;
         public TextView texto;
-
         public TextView artista;
 
 
@@ -41,7 +49,24 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyViewHolder
         }
 
         public void bind(QueryItem article) {
-            imagen.setImageDrawable(article.getFoto());
+
+            // Descargo la imagen correspondiente del Storage
+
+            try {
+
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference portadaRef = storage.getReference().child("portadas/" + article.getId() + ".jpg");
+                Log.d("_TAG", article.getId() + ".jpg");
+
+                portadaRef.getBytes(1024 * 1024).addOnSuccessListener(bytes -> {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    imagen.setImageBitmap(bmp);
+
+                }).addOnFailureListener(exception -> imagen.setImageBitmap(null));
+
+            }catch (Exception e){
+                imagen.setImageBitmap(null);
+            }
             texto.setText(article.getNombre());
             artista.setText(article.getArtista());
         }
