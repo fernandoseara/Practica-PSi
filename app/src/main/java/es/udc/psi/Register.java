@@ -128,9 +128,18 @@ public class Register extends AppCompatActivity {
 
                                         String uid = mAuth.getCurrentUser().getUid();
 
-                                        Uri profilePhoto = Uri.parse(imageViewPhoto.getTag().toString());
+                                        // Manejo de la foto de perfil
+                                        Uri profilePhoto = null;
+                                        if(imageViewPhoto.getTag() != null){
+                                            profilePhoto = Uri.parse(imageViewPhoto.getTag().toString());
+                                        }
+                                        else{
+                                            String drawableResourceString = "android.resource://es.udc.psi/" + R.drawable.fotoperfil_prueba;
+                                            profilePhoto = Uri.parse(drawableResourceString);
+                                        }
                                         uploadImageToFirebase(profilePhoto, uid);
 
+                                        // Listo: Creo el objeto User con estos datos y lanzo este perfil.
                                         createUserData(uid, email, name, lastname, description);
 
                                         Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
