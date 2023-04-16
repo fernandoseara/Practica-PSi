@@ -7,7 +7,7 @@ public class User {
     public String name;
     public String lastname;
     public String description;
-    public ArrayList<Integer> collections;
+    public ArrayList<ArrayList<String>> collections;
 
 
     public User(String email, String name, String lastname, String description) {
@@ -15,6 +15,12 @@ public class User {
         this.name = name;
         this.lastname = lastname;
         this.description = description;
-        this.collections = new ArrayList<Integer>();
+
+        // Añado una colección de prueba
+        ArrayList<ArrayList<String>> cols = new ArrayList<>();
+        ArrayList<String> col = new ArrayList<>();
+        col.add("001");
+        cols.add(col);
+        this.collections = cols;
     }
 }

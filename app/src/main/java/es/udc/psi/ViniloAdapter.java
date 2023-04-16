@@ -26,19 +26,15 @@ public class ViniloAdapter extends RecyclerView.Adapter<ViniloAdapter.MyViewHold
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView imagen;
-        public TextView nombre;
-
 
         public MyViewHolder(View view) {
             super(view);
             imagen = view.findViewById(R.id.vinilo_item_imagen);
-            nombre = view.findViewById(R.id.vinilo_item_nombre);
             view.setOnClickListener(this);
         }
 
         public void bind(Vinilo article) {
-            imagen.setImageDrawable(article.getPortada());
-            nombre.setText(article.getTitulo());
+            imagen.setImageBitmap(article.getPortada());
         }
 
         @Override

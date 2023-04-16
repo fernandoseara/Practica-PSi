@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +22,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -40,6 +45,8 @@ public class VistaPerfil extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +66,52 @@ public class VistaPerfil extends AppCompatActivity {
                             .toString());
                     binding.vistaPerfilTextoDescripcion.setText(snapshot.child("description").getValue()
                             .toString());
+
+
+
+                    System.out.println(snapshot.child("collections").getValue());
+                    ArrayList<ArrayList<String>> colecciones = (ArrayList<ArrayList<String>>) snapshot.child("collections").getValue();
+
+
+                    if (colecciones != null) {
+
+                        // Para cada coleccion
+                        for (ArrayList<String> coleccion : colecciones) {
+
+                            // TODO: Aún hay que implementar un mecanismo para poder poner más de una colección.
+
+                            ArrayList<Vinilo> initialData = new ArrayList<>();
+
+                            // Para cada vinilo de la coleccion
+                            for(int i = 0; i<coleccion.size(); i++) {
+
+                                // Pongo su portada en el imageview del recycler
+                                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                                StorageReference photoReference= storageReference.child("portadas/" +  coleccion.get(i) + ".jpg");
+
+                                try{
+                                    File portadaFile = File.createTempFile("portada" + i, ".jpg");
+                                    photoReference.getFile(portadaFile)
+                                            .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                    Bitmap bmp = BitmapFactory.decodeFile(portadaFile.getAbsolutePath());
+                                                    initialData.add(new Vinilo(bmp));
+                                                }
+                                            });
+                                }catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+
+                                initRecycler(initialData);
+                            }
+                        }
+                    }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(VistaPerfil.this, "La base de datos está fallando. ¿Tienes conexión?", Toast.LENGTH_SHORT).show();
             }
         });
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -85,13 +132,25 @@ public class VistaPerfil extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
-        // Inicio recycler con 10 vinilos de prueba
 
+        // Inicio recycler con vinilos de prueba
         ArrayList<Vinilo> initialData = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            initialData.add(new Vinilo("Vinilo de Prueba (sin foto)", "Prueba"));
+        for (int i = 0; i < 5; i++) {
+            initialData.add(new Vinilo(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
         }
         initRecycler(initialData);
+
+
+        // Botón de log out
+        binding.logoutBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void initRecycler(ArrayList<Vinilo> vinilos) {
@@ -112,18 +171,9 @@ public class VistaPerfil extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), VistaVinilo.class);
                 intent.putExtra(KEY_VINILO, mAdapter.getItem(pos));
                 intent.putExtra(KEY_POS, pos);
-                startActivityForResult(intent,1);
+                startActivity(intent);
             }
         });
 
-        binding.logoutBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
 }

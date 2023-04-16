@@ -1,6 +1,6 @@
 package es.udc.psi;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;;
 import android.media.Image;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,20 +9,13 @@ import androidx.annotation.NonNull;
 
 public class Vinilo implements Parcelable {
 
-    Drawable portada;
+    Bitmap portada;
     String titulo;
     String description ;
 
-    public Vinilo(String titulo, Drawable portada, String description) {
-        this.titulo = titulo;
+    // Método estándar para definir el item de vinilo en las colecciones del perfil
+    public Vinilo(Bitmap portada){
         this.portada = portada;
-        this.description = description;
-    }
-
-    public Vinilo(String titulo, String description) {
-        this.titulo = titulo;
-        this.portada = portada;
-        this.description = description;
     }
 
     protected Vinilo(Parcel in) {
@@ -43,27 +36,11 @@ public class Vinilo implements Parcelable {
         }
     };
 
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Drawable getPortada() {
+    public Bitmap getPortada() {
         return portada;
     }
 
-    public void setPortada(Drawable portada) {
+    public void setPortada(Bitmap portada) {
         this.portada = portada;
     }
 
