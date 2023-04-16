@@ -2,6 +2,8 @@ package es.udc.psi;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -65,7 +68,7 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyViewHolder
                 }).addOnFailureListener(exception -> imagen.setImageBitmap(null));
 
             }catch (Exception e){
-                imagen.setImageBitmap(null);
+                imagen.setImageResource(R.drawable.sin_portada);
             }
             texto.setText(article.getNombre());
             artista.setText(article.getArtista());
