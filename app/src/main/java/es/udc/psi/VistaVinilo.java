@@ -69,7 +69,6 @@ public class VistaVinilo extends AppCompatActivity {
                 binding.vistaViniloPortada.setImageBitmap(null);
             }
         });
-
     }
 
     public void compartirVinilo(View view){

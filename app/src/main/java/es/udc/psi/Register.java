@@ -134,7 +134,7 @@ public class Register extends AppCompatActivity {
                                             profilePhoto = Uri.parse(imageViewPhoto.getTag().toString());
                                         }
                                         else{
-                                            String drawableResourceString = "android.resource://es.udc.psi/" + R.drawable.fotoperfil_prueba;
+                                            String drawableResourceString = "android.resource://es.udc.psi/" + R.drawable.sin_foto_perfil;
                                             profilePhoto = Uri.parse(drawableResourceString);
                                         }
                                         uploadImageToFirebase(profilePhoto, uid);

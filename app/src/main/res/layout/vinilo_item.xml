@@ -11,7 +11,7 @@
         android:id="@+id/vinilo_item_imagen"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/portada_prueba"
+        android:src="@drawable/sin_portada"
         android:layout_margin="5dp"
         android:scaleType="fitXY"/>
 

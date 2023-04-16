@@ -82,6 +82,9 @@ public class VistaPerfil extends AppCompatActivity {
 
                             ArrayList<Vinilo> initialData = new ArrayList<>();
 
+                            initialData.add(new Vinilo(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
+
+
                             // Para cada vinilo de la coleccion
                             for(int i = 0; i<coleccion.size(); i++) {
 
@@ -131,12 +134,6 @@ public class VistaPerfil extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
-
-        // Inicio recycler con vinilos de prueba
-        ArrayList<Vinilo> initialData = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            initialData.add(new Vinilo(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
-        }
         // initRecycler(initialData);
 
 

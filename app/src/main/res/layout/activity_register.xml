@@ -11,7 +11,8 @@
         android:text="@string/register"
         android:textSize="20sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"/>
 
     <ImageView
         android:id="@+id/profile_photo_reg"
@@ -20,6 +21,7 @@
         android:layout_gravity="center_horizontal"
         android:background="#7A7272"
         android:src="@color/gray"
+        android:layout_margin="5dp"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -30,7 +32,8 @@
             android:id="@+id/email_reg"
             android:hint="@string/email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -41,7 +44,8 @@
             android:id="@+id/password_reg"
             android:hint="@string/password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +56,8 @@
             android:id="@+id/user_name"
             android:hint="@string/name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +68,8 @@
             android:id="@+id/user_lastname"
             android:hint="@string/lastname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -74,19 +80,23 @@
             android:id="@+id/user_description"
             android:hint="@string/description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/register_but"
         android:text="@string/register"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/loginNow"
         android:text="@string/click_to_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textSize="18sp"/>
 
 </LinearLayout>
