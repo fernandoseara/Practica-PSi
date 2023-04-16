@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -53,6 +54,27 @@ public class MainActivity extends AppCompatActivity{
         setup_buscarPerfiles();
 
         setup_buscarVinilos();
+
+
+        TabLayout tabLayout = findViewById(R.id.mainActivity_tab_layout);
+        tabLayout.getTabAt(0).select();
+
+        TabLayout.Tab tab = tabLayout.getTabAt(1);
+        if (tab != null) {
+            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    if (tab.getPosition() == 1) {
+                        Intent intent = new Intent(MainActivity.this, MensajeHub.class);
+                        startActivity(intent);
+                    }
+                }
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {}
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {}
+            });
+        }
     }
 
     public void setup_buscarPerfiles(){

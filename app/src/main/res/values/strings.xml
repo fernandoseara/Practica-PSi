@@ -17,4 +17,5 @@
     <string name="name">Nombre</string>
     <string name="lastname">Apellidos</string>
     <string name="description">Descripción</string>
+    <string name="bienvenido_a_tocappdiscos_n_n_chale_un_ojo_a_las_cosas_que_puedes_hacer">¡Bienvenido a TocAppDiscos! \n\nÉchale un ojo a las cosas que puedes hacer...</string>
 </resources>

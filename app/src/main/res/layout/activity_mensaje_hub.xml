@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MensajeHub">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hola, aquí va a ir la actividad de mensajería instantánea"
+            android:layout_gravity="center"
+            android:layout_margin="60dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/mensaje_hub_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:layout_gravity="bottom"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        android:layout_marginTop="60dp">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/mensaje_hub_tab_buscar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buscar" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/mensaje_hub_tab_mensaje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mensaje" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+</LinearLayout>

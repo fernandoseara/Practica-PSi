@@ -14,36 +14,39 @@
         android:theme="@style/Theme.TT_PSI"
         tools:targetApi="31">
         <activity
+            android:name=".MensajeHub"
+            android:exported="false" />
+        <activity
             android:name=".ListaQuery"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".Register"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".Login"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".VistaVinilo"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".VistaPerfil"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
