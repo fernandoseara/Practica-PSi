@@ -102,9 +102,8 @@ public class VistaPerfil extends AppCompatActivity {
                                 }catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
-
-                                initRecycler(initialData);
                             }
+                            initRecycler(initialData);
                         }
                     }
                 }
@@ -138,7 +137,7 @@ public class VistaPerfil extends AppCompatActivity {
         for (int i = 0; i < 5; i++) {
             initialData.add(new Vinilo(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
         }
-        initRecycler(initialData);
+        // initRecycler(initialData);
 
 
         // Botón de log out
@@ -162,7 +161,7 @@ public class VistaPerfil extends AppCompatActivity {
         binding.vinilosRv.setLayoutManager(linearLayoutManager);
         binding.vinilosRv.setAdapter(mAdapter);
 
-
+    /*
         mAdapter.setClickListener(new ViniloAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, int pos) {
@@ -175,5 +174,8 @@ public class VistaPerfil extends AppCompatActivity {
             }
         });
 
+    }
+
+     */
     }
 }
