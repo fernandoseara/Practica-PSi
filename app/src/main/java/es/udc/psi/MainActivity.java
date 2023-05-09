@@ -25,8 +25,12 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -45,6 +49,8 @@ public class MainActivity extends AppCompatActivity{
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +58,7 @@ public class MainActivity extends AppCompatActivity{
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         setup_buscarPerfiles();
-
         setup_buscarVinilos();
-
 
         TabLayout tabLayout = findViewById(R.id.mainActivity_tab_layout);
         tabLayout.getTabAt(0).select();
@@ -91,11 +95,14 @@ public class MainActivity extends AppCompatActivity{
                     return;
                 }
 
-                // TODO: Hacer la query a la base de datos de Perfiles con ese texto
+                // Busco texto en base de datos
+                final DatabaseReference perfilesRef = FirebaseDatabase.getInstance().getReference("Users");
+                System.out.println(perfilesRef.orderByChild("email").equalTo(texto));
 
-                Intent intent = new Intent(MainActivity.this, ListaQuery.class);
-                intent.putExtra("modo", "Perfil");
-                // intent.putExtra( DATOS RECIBIDOS DE LA BD )
+                // TODO: Pillar el perfil que salga y lanzar VistaPerfil
+
+                Intent intent = new Intent(MainActivity.this, VistaPerfil.class);
+                intent.putExtra("email", texto);
                 startActivity(intent);
             }
         });
@@ -174,11 +181,10 @@ public class MainActivity extends AppCompatActivity{
                     Intent intent = new Intent(getApplicationContext(), Login.class);
                     startActivity(intent);
                 } else {
+
+                    // Lanzo VistaPerfil con mi propio perfil
                     Intent intent = new Intent(this, VistaPerfil.class);
-
-                    // Seguramente querramos mandarle las claves para buscar el perfil en la BD aqui
-                    //intent.putExtra("ID", "Jose Carlos");
-
+                    intent.putExtra("email", auth.getCurrentUser().getEmail());
                     startActivity(intent);
                 }
 

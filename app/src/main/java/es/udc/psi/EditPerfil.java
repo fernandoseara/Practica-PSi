@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class EditPerfil extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword, editTextName, editTextLastname, editTextDescription;
+    EditText editTextEmail, editTextPassword, editTextName, editTextLastname, editTextDescription;
 
     Button guardarCambiosButton;
     Button borrarPerfilButton;

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,12 +46,24 @@ public class VistaPerfil extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vista_perfil);
+
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+
+        // ¿Es el mío este perfil?
+        if (currentUser.getEmail() == email){
+            setContentView(R.layout.activity_vista_perfil_propio);
+
+        }else{
+            setContentView(R.layout.activity_vista_perfil);
+        }
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -83,7 +96,6 @@ public class VistaPerfil extends AppCompatActivity {
                             ArrayList<Vinilo> initialData = new ArrayList<>();
 
                             initialData.add(new Vinilo(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
-
 
                             // Para cada vinilo de la coleccion
                             for(int i = 0; i<coleccion.size(); i++) {
