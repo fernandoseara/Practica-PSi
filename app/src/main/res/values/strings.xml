@@ -9,7 +9,7 @@
     <string name="register">Registrarse</string>
     <string name="click_to_login">Toca para iniciar sesión</string>
     <string name="click_to_register">Toca para registrarte</string>
-    <string name="BuscarPerfiles_editText_texto">Busca a alguien por su nombre de usuario</string>
+    <string name="BuscarPerfiles_editText_texto">Busca a alguien por su email de usuario.</string>
     <string name="BuscarPerfiles_boton_texto">Buscar Perfil</string>
     <string name="logout">Cerrar sesión</string>
     <string name="vistaVinilo_boton_compartir">Compartir</string>

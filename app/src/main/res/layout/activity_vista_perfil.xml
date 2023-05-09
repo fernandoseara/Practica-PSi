@@ -81,21 +81,5 @@
         android:clipToPadding="false"
         android:background="@color/white" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/vinilos_rv"
-        >
-
-        <Button
-            android:id="@+id/logout_but"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/logout" />
-
-    </LinearLayout>
-
 </RelativeLayout>
 </layout>

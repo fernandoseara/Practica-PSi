@@ -29,8 +29,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -97,13 +101,58 @@ public class MainActivity extends AppCompatActivity{
 
                 // Busco texto en base de datos
                 final DatabaseReference perfilesRef = FirebaseDatabase.getInstance().getReference("Users");
-                System.out.println(perfilesRef.orderByChild("email").equalTo(texto));
+                Query query = perfilesRef.orderByChild("email").equalTo(texto);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            // Si hay resultados, obtén el primer elemento encontrado
+                            DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
 
-                // TODO: Pillar el perfil que salga y lanzar VistaPerfil
+                            // Aquí puedes obtener el elemento que coincide con la búsqueda
+                            String uid = firstChild.getKey();
+                            String nombre = firstChild.child("name").getValue(String.class);
+                            String apellidos = firstChild.child("lastname").getValue(String.class);
+                            String email = firstChild.child("email").getValue(String.class);
+                            String descripcion = firstChild.child("description").getValue(String.class);
 
-                Intent intent = new Intent(MainActivity.this, VistaPerfil.class);
-                intent.putExtra("email", texto);
-                startActivity(intent);
+                            DataSnapshot collectionsSnapshot = firstChild.child("collections");
+                            ArrayList<ArrayList<String>> collectionsList = new ArrayList<>();
+                            ArrayList<String> coleccion = new ArrayList<>();
+
+                            for (DataSnapshot col : collectionsSnapshot.getChildren()) {
+
+                                coleccion = new ArrayList<>();
+                                for (DataSnapshot vinilo : col.getChildren()) {
+                                    coleccion.add(vinilo.getValue(String.class));
+                                }
+                                collectionsList.add(coleccion);
+                            }
+
+                            Intent intent = new Intent(MainActivity.this, VistaPerfil.class);
+                            intent.putExtra("uid", uid);
+                            intent.putExtra("email", email);
+                            intent.putExtra("nombre", nombre);
+                            intent.putExtra("apellidos", apellidos);
+                            intent.putExtra("descripcion", descripcion);
+
+                            // TODO: Por ahora sólo una colección
+                            intent.putStringArrayListExtra("colecciones", collectionsList.get(0));
+
+                            startActivity(intent);
+
+                        } else {
+
+                            Toast.makeText(MainActivity.this, "Este perfil no existe, ¿estás escribiéndolo bien?", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Manejar cualquier error de consulta aquí
+                    }
+                });
+
             }
         });
     }
