@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity{
                 Query query = perfilesRef.orderByChild("email").equalTo(texto);
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                         if (dataSnapshot.exists()) {
                             // Si hay resultados, obtén el primer elemento encontrado
                             DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
