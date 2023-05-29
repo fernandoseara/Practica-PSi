@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity{
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -227,11 +225,12 @@ public class MainActivity extends AppCompatActivity{
 
                 auth = FirebaseAuth.getInstance();
                 user = auth.getCurrentUser();
-                if (user == null) {
+
+                if(user == null) {
                     Intent intent = new Intent(getApplicationContext(), Login.class);
                     startActivity(intent);
-                } else {
 
+                } else {
                     // Lanzo VistaPerfil con mi propio perfil
                     Intent intent = new Intent(this, VistaPerfil.class);
                     intent.putExtra("email", auth.getCurrentUser().getEmail());

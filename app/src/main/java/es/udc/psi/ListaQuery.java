@@ -76,7 +76,6 @@ public class ListaQuery extends AppCompatActivity {
             query_item_envio.add(mAdapter.getItem(pos));
             intent.putParcelableArrayListExtra(KEY_ITEM, query_item_envio);
 
-
             intent.putExtra(KEY_POS, pos);
             startActivity(intent);
         });

@@ -13,7 +13,7 @@
     <string name="BuscarPerfiles_boton_texto">Buscar Perfil</string>
     <string name="logout">Cerrar sesión</string>
     <string name="vistaVinilo_boton_compartir">Compartir</string>
-    <string name="vistaVinilo_boton_añadirLista">Añadir a una lista de vinilos</string>
+    <string name="vistaVinilo_boton_añadirLista">Añadir a lista de vinilos</string>
     <string name="name">Nombre</string>
     <string name="lastname">Apellidos</string>
     <string name="description">Descripción</string>

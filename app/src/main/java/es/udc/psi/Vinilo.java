@@ -10,16 +10,20 @@ import androidx.annotation.NonNull;
 public class Vinilo implements Parcelable {
 
     Bitmap portada;
+
+    String ID;
     String titulo;
     String description ;
 
     // Método estándar para definir el item de vinilo en las colecciones del perfil
-    public Vinilo(Bitmap portada){
+    public Vinilo(String ID, Bitmap portada){
+        this.ID = ID;
         this.portada = portada;
     }
 
     protected Vinilo(Parcel in) {
         titulo = in.readString();
+        ID = in.readString();
         //portada = in.read();      // TODO: Habria que ver como se haria esto
         description = in.readString();
     }

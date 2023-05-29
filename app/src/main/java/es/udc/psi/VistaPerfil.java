@@ -44,7 +44,7 @@ public class VistaPerfil extends AppCompatActivity {
     private ActivityVistaPerfilPropioBinding binding2;
 
     private ViniloAdapter mAdapter;
-    private final String KEY_VINILO = "contrasena";
+    private final String KEY_ITEM = "contrasena";
     private final String KEY_POS = "sdjnv";
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
@@ -61,12 +61,13 @@ public class VistaPerfil extends AppCompatActivity {
         String email = intent.getStringExtra("email");
 
         // ¿Es el mío este perfil?
-        if (currentUser!= null) {
-            boolean propio = Objects.equals(currentUser.getEmail(), email);
+        if (currentUser != null) {
+            propio = Objects.equals(currentUser.getEmail(), email);
         }
 
         if (propio) { // El perfil es el mío
 
+            Log.d("_TAG", "Se está viendo el prefil propio.");
             setContentView(R.layout.activity_vista_perfil_propio);
 
             binding2 = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil_propio);
@@ -96,7 +97,7 @@ public class VistaPerfil extends AppCompatActivity {
 
                                 ArrayList<Vinilo> initialData = new ArrayList<>();
 
-                                initialData.add(new Vinilo(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
+                                //initialData.add("000", new Vinilo(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
 
                                 // Para cada vinilo de la coleccion
                                 for(int i = 0; i<coleccion.size(); i++) {
@@ -107,12 +108,13 @@ public class VistaPerfil extends AppCompatActivity {
 
                                     try{
                                         File portadaFile = File.createTempFile("portada" + i, ".jpg");
+                                        String finalI = String.valueOf(i);
                                         photoReference.getFile(portadaFile)
                                                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                                     @Override
                                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                                         Bitmap bmp = BitmapFactory.decodeFile(portadaFile.getAbsolutePath());
-                                                        initialData.add(new Vinilo(bmp));
+                                                        initialData.add(new Vinilo(finalI, bmp));
                                                     }
                                                 });
                                     }catch (IOException e) {
@@ -162,6 +164,8 @@ public class VistaPerfil extends AppCompatActivity {
         }
         else { // El perfil no es el mío
 
+            Log.d("_TAG", "Se está viendo un prefil ajeno.");
+
             setContentView(R.layout.activity_vista_perfil);
             binding = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil);
 
@@ -177,30 +181,35 @@ public class VistaPerfil extends AppCompatActivity {
 
             ArrayList<Vinilo> initialData = new ArrayList<>();
 
-            initialData.add(new Vinilo(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
+            if(coleccion != null) {
 
-            // Para cada vinilo de la coleccion
-            for(int i = 0; i < coleccion.size(); i++) {
+                // Para cada vinilo de la coleccion
+                for (int i = 0; i < coleccion.size(); i++) {
 
-                // Pongo su portada en el imageview del recycler
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                StorageReference photoReference= storageReference.child("portadas/" +  coleccion.get(i) + ".jpg");
+                    // Pongo su portada en el imageview del recycler
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                    StorageReference photoReference = storageReference.child("portadas/" + coleccion.get(i) + ".jpg");
 
-                try{
-                    File portadaFile = File.createTempFile("portada" + i, ".jpg");
-                    photoReference.getFile(portadaFile)
-                            .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(this, "Pillo " + "portadas/" + coleccion.get(i) + ".jpg", Toast.LENGTH_SHORT).show();
+
+                    try {
+                        File portadaFile = File.createTempFile("portada" + i, ".jpg");
+                        String finalI = String.valueOf(i);
+                        photoReference.getFile(portadaFile)
+                                .addOnSuccessListener(taskSnapshot -> {
                                     Bitmap bmp = BitmapFactory.decodeFile(portadaFile.getAbsolutePath());
-                                    initialData.add(new Vinilo(bmp));
-                                }
-                            });
-                }catch (IOException e) {
-                    throw new RuntimeException(e);
+                                    initialData.add(new Vinilo(finalI, bmp));
+                                })
+                                .addOnFailureListener(exception -> {
+                                    Toast.makeText(this, "No soy capaz de cargar esta imagen", Toast.LENGTH_SHORT).show();
+                                });
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
+                initialData.add(new Vinilo("018",Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
+                initRecycler(initialData, propio);
             }
-            initRecycler(initialData, propio);
         }
     }
 
@@ -217,21 +226,19 @@ public class VistaPerfil extends AppCompatActivity {
             binding.vinilosRv.setAdapter(mAdapter);
         }
 
-    /*
         mAdapter.setClickListener(new ViniloAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, int pos) {
                 Log.d("_TAG", " Item " + pos );
 
                 Intent intent = new Intent(getApplicationContext(), VistaVinilo.class);
-                intent.putExtra(KEY_VINILO, mAdapter.getItem(pos));
+                ArrayList<Vinilo> vinilo_item_envio = new ArrayList<>();
+                vinilo_item_envio.add(mAdapter.getItem(pos));
+                intent.putParcelableArrayListExtra(KEY_ITEM, vinilo_item_envio);
                 intent.putExtra(KEY_POS, pos);
                 startActivity(intent);
             }
         });
 
-    }
-
-     */
     }
 }

@@ -80,7 +80,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/vistaVinilo_boton_añadirLista"
                 android:textSize="10sp"
-                android:layout_margin="20dp"/>
+                android:layout_margin="20dp"
+                android:onClick="anadirLista"/>
 
             <Button
                 android:id="@+id/vistaVinilo_boton_compartir"
