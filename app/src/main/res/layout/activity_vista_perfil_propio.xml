@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:text="John Doe"
+            android:text="@string/nombre_perfil_propio_ejemplo"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:text="john.doe@example.com"
+            android:text="@string/email_perfil_propio_ejemplo"
             android:textColor="@color/cardview_dark_background"
             android:textSize="16sp" />
 
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et ante vitae magna aliquam dapibus."
+            android:text="@string/descripcion_perfil_propio_ejemplo"
             android:textColor="@color/cardview_dark_background"
             android:textSize="14sp" />
 
@@ -63,7 +63,7 @@
         android:layout_below="@id/profile_section"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Lista de vinilos"
+        android:text="@string/lista_de_vinilos_perfil_propio"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:text="Editar perfil" />
+            android:text="@string/editar_perfil_but" />
 
         <Button
             android:id="@+id/logout_but"

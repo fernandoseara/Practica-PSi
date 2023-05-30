@@ -18,4 +18,16 @@
     <string name="lastname">Apellidos</string>
     <string name="description">Descripción</string>
     <string name="bienvenido_a_tocappdiscos_n_n_chale_un_ojo_a_las_cosas_que_puedes_hacer">¡Bienvenido a TocAppDiscos! \n\nÉchale un ojo a las cosas que puedes hacer...</string>
+    <string name="nombre_editarPerfil">Nombre</string>
+    <string name="apellidos_editarPerfil">Apellidos</string>
+    <string name="description_editarPerfil">Description</string>
+    <string name="email_editarPerfil">Email</string>
+    <string name="contrasena_editarPerfil">Contraseña</string>
+    <string name="guardar_cambios_but">Guardar Cambios</string>
+    <string name="borrar_perfil_but">Borrar Perfil</string>
+    <string name="editar_perfil_but">Editar perfil</string>
+    <string name="lista_de_vinilos_perfil_propio">Lista de vinilos</string>
+    <string name="descripcion_perfil_propio_ejemplo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et ante vitae magna aliquam dapibus.</string>
+    <string name="nombre_perfil_propio_ejemplo">John Doe</string>
+    <string name="email_perfil_propio_ejemplo">john.doe@example.com</string>
 </resources>

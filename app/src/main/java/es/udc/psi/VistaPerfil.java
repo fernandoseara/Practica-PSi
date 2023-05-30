@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -73,20 +74,17 @@ public class VistaPerfil extends AppCompatActivity {
             binding2 = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil_propio);
 
             mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser()
-                    .getUid()).addValueEventListener(new ValueEventListener() {
+            mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-                        String fullname = snapshot.child("name").getValue().toString() + " " +
-                                snapshot.child("lastname").getValue().toString();
+                        String fullname = snapshot.child("name").getValue(String.class) + " " +
+                                snapshot.child("lastname").getValue(String.class);
                         binding2.vistaPerfilTextoNombre.setText(fullname);
-                        binding2.vistaPerfilTextoEmail.setText(snapshot.child("email").getValue()
-                                .toString());
-                        binding2.vistaPerfilTextoDescripcion.setText(snapshot.child("description").getValue()
-                                .toString());
-
-                        ArrayList<ArrayList<String>> colecciones = (ArrayList<ArrayList<String>>) snapshot.child("collections").getValue();
+                        binding2.vistaPerfilTextoEmail.setText(snapshot.child("email").getValue(String.class));
+                        binding2.vistaPerfilTextoDescripcion.setText(snapshot.child("description").getValue(String.class));
+                        GenericTypeIndicator<ArrayList<ArrayList<String>>> typeIndicator = new GenericTypeIndicator<ArrayList<ArrayList<String>>>() {};
+                        ArrayList<ArrayList<String>> colecciones = snapshot.child("collections").getValue(typeIndicator);
 
                         if (colecciones != null) {
 
@@ -159,6 +157,14 @@ public class VistaPerfil extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
+                }
+            });
+
+            binding2.editBut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(VistaPerfil.this, EditPerfil.class);
+                    startActivity(intent);
                 }
             });
         }

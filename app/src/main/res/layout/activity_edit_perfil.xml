@@ -9,56 +9,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="Nombre" />
+        android:hint="@string/nombre_editarPerfil" />
 
     <EditText
         android:id="@+id/editTextLastname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="Apellidos" />
+        android:hint="@string/apellidos_editarPerfil" />
 
     <EditText
         android:id="@+id/editTextDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="Description" />
+        android:hint="@string/description_editarPerfil" />
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextName"
         android:layout_margin="16dp"
-        android:hint="Email" />
+        android:hint="@string/email_editarPerfil" />
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextEmail"
         android:layout_margin="16dp"
-        android:hint="Contraseña"
+        android:hint="@string/contrasena_editarPerfil"
         android:inputType="textPassword" />
-
-
-
 
     <Button
         android:id="@+id/guardarCambiosButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextPassword"
         android:layout_margin="16dp"
-        android:text="Guardar Cambios" />
+        android:text="@string/guardar_cambios_but" />
 
     <Button
         android:id="@+id/borrarPerfilButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/guardarCambiosButton"
         android:layout_margin="16dp"
-        android:text="Borrar Perfil" />
+        android:text="@string/borrar_perfil_but" />
 
 </LinearLayout>
