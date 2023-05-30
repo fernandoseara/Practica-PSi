@@ -64,8 +64,12 @@ public class VistaPerfil extends AppCompatActivity {
         // ¿Es el mío este perfil?
         if (currentUser != null) {
             propio = Objects.equals(currentUser.getEmail(), email);
+        }else{
+            Intent intent_login = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent_login);
         }
 
+        Toast.makeText(this, email, Toast.LENGTH_SHORT).show();
         if (propio) { // El perfil es el mío
 
             Log.d("_TAG", "Se está viendo el prefil propio.");
@@ -74,12 +78,13 @@ public class VistaPerfil extends AppCompatActivity {
             binding2 = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil_propio);
 
             mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
+            mDatabase.child("Users").child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         String fullname = snapshot.child("name").getValue(String.class) + " " +
                                 snapshot.child("lastname").getValue(String.class);
+
                         binding2.vistaPerfilTextoNombre.setText(fullname);
                         binding2.vistaPerfilTextoEmail.setText(snapshot.child("email").getValue(String.class));
                         binding2.vistaPerfilTextoDescripcion.setText(snapshot.child("description").getValue(String.class));
@@ -123,6 +128,9 @@ public class VistaPerfil extends AppCompatActivity {
                                 initRecycler(initialData, propio);
                             }
                         }
+                    }else{
+                        Intent intent_login = new Intent(getApplicationContext(), Login.class);
+                        startActivity(intent_login);
                     }
                 }
                 @Override

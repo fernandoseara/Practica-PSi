@@ -36,6 +36,7 @@ public class Login extends AppCompatActivity {
         if(currentUser != null){
             /* TODO cambiar a la activity que queramos */
             Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
+            intent.putExtra("email", currentUser.getEmail());
             startActivity(intent);
             finish();
         }
@@ -84,7 +85,7 @@ public class Login extends AppCompatActivity {
                                         Toast.makeText(Login.this, "Authentication success.",
                                                 Toast.LENGTH_SHORT).show();
                                         /* TODO cambiar a la activity que queramos */
-                                        Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         startActivity(intent);
                                         finish();
                                     } else {
@@ -114,5 +115,4 @@ public class Login extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
