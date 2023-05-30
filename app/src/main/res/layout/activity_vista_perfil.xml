@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:text="Cargando..."
+            android:text="@string/nombre_perfil_propio_ejemplo"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -38,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:text=""
             android:textColor="@color/cardview_dark_background"
             android:textSize="16sp" />
 
@@ -49,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:text=""
             android:textColor="@color/cardview_dark_background"
             android:textSize="14sp" />
 
@@ -63,7 +61,7 @@
         android:layout_below="@id/profile_section"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Lista de vinilos"
+        android:text="@string/lista_de_vinilos_perfil"
         android:textColor="@color/black"
         android:textSize="18sp" />
 

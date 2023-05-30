@@ -119,7 +119,6 @@ public class VistaPerfil extends AppCompatActivity {
                                         throw new RuntimeException(e);
                                     }
 
-
                                 }
                                 initRecycler(initialData, propio);
                             }
@@ -131,6 +130,8 @@ public class VistaPerfil extends AppCompatActivity {
                     Toast.makeText(VistaPerfil.this, "La base de datos está fallando. ¿Tienes conexión?", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            // Foto de perfil
             mStorage = FirebaseStorage.getInstance().getReference();
             StorageReference photoReference = mStorage.child("profilePhotos/" +
                     FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
@@ -185,8 +186,25 @@ public class VistaPerfil extends AppCompatActivity {
             binding.vistaPerfilTextoEmail.setText(email);
             binding.vistaPerfilTextoDescripcion.setText(descripcion);
 
-            ArrayList<Vinilo> initialData = new ArrayList<>();
+            // Foto de perfil
+            mStorage = FirebaseStorage.getInstance().getReference();
+            StorageReference profilePhotoReference = mStorage.child("profilePhotos/" + uid + ".jpg");
+            try {
+                File localFile = File.createTempFile("profile",".jpg");
+                profilePhotoReference.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                binding.vistaPerfilFotoPerfil.setImageBitmap(bitmap);
+                            }
+                        });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
+            // Recyclerview de colección
+            ArrayList<Vinilo> initialData = new ArrayList<>();
             if(coleccion != null) {
 
                 // Para cada vinilo de la coleccion
@@ -195,8 +213,6 @@ public class VistaPerfil extends AppCompatActivity {
                     // Pongo su portada en el imageview del recycler
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                     StorageReference photoReference = storageReference.child("portadas/" + coleccion.get(i) + ".jpg");
-
-                    Toast.makeText(this, "Pillo " + "portadas/" + coleccion.get(i) + ".jpg", Toast.LENGTH_SHORT).show();
 
                     try {
                         File portadaFile = File.createTempFile("portada" + i, ".jpg");
@@ -213,7 +229,7 @@ public class VistaPerfil extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
                 }
-                initialData.add(new Vinilo("018",Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
+                initialData.add(new Vinilo("-1",Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
                 initRecycler(initialData, propio);
             }
         }
