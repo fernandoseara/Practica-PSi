@@ -26,7 +26,6 @@
     <string name="guardar_cambios_but">Guardar Cambios</string>
     <string name="borrar_perfil_but">Borrar Perfil</string>
     <string name="editar_perfil_but">Editar perfil</string>
-    <string name="lista_de_vinilos_perfil">Lista de vinilos</string>
     <string name="nombre_perfil_propio_ejemplo">Cargando...</string>
     <string name="vistaPerfil_listaVinilos_text">Lista de vinilos</string>
 </resources>

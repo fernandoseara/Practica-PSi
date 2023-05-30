@@ -88,10 +88,13 @@ public class VistaPerfil extends AppCompatActivity {
                         binding2.vistaPerfilTextoNombre.setText(fullname);
                         binding2.vistaPerfilTextoEmail.setText(snapshot.child("email").getValue(String.class));
                         binding2.vistaPerfilTextoDescripcion.setText(snapshot.child("description").getValue(String.class));
+
                         GenericTypeIndicator<ArrayList<ArrayList<String>>> typeIndicator = new GenericTypeIndicator<ArrayList<ArrayList<String>>>() {};
                         ArrayList<ArrayList<String>> colecciones = snapshot.child("collections").getValue(typeIndicator);
 
                         if (colecciones != null) {
+
+                            binding2.listaDeVinilosTextview.setText(R.string.vistaPerfil_listaVinilos_text);
 
                             // Para cada coleccion
                             for (ArrayList<String> coleccion : colecciones) {
@@ -194,6 +197,7 @@ public class VistaPerfil extends AppCompatActivity {
             binding.vistaPerfilTextoEmail.setText(email);
             binding.vistaPerfilTextoDescripcion.setText(descripcion);
 
+
             // Foto de perfil
             mStorage = FirebaseStorage.getInstance().getReference();
             StorageReference profilePhotoReference = mStorage.child("profilePhotos/" + uid + ".jpg");
@@ -214,6 +218,8 @@ public class VistaPerfil extends AppCompatActivity {
             // Recyclerview de colección
             ArrayList<Vinilo> initialData = new ArrayList<>();
             if(coleccion != null) {
+
+                binding.listaDeVinilosTextview.setText(R.string.vistaPerfil_listaVinilos_text);
 
                 // Para cada vinilo de la coleccion
                 for (int i = 0; i < coleccion.size(); i++) {

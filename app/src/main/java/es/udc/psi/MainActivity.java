@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -23,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.AuthResult;
@@ -38,7 +41,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +57,17 @@ public class MainActivity extends AppCompatActivity{
     private ActivityMainBinding binding;
     private FirebaseAuth auth;
     private FirebaseUser user;
+    private StorageReference mStorage;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+    String uid;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,6 +226,33 @@ public class MainActivity extends AppCompatActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_opciones, menu);
+
+        MenuItem perfilMenuItem = menu.findItem(R.id.perfil);
+
+        // Si está registrado, se pone el icono de la foto de perfil en el botón del menú
+        if(currentUser != null){
+            uid = currentUser.getUid();
+
+            mStorage = FirebaseStorage.getInstance().getReference();
+            StorageReference photoReference = mStorage.child("profilePhotos/" +
+                    uid + ".jpg");
+
+            try {
+                File localFile = File.createTempFile("icono_perfil",".jpg");
+                photoReference.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                                perfilMenuItem.setIcon(drawable);
+                            }
+                        });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         return true;
     }
 

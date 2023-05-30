@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Profile section -->
+    <!-- Sección de datos de perfil -->
     <LinearLayout
         android:id="@+id/profile_section"
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Profile photo -->
+        <!-- Foto de perfil -->
         <ImageView
             android:id="@+id/vistaPerfil_foto_perfil"
             android:layout_width="100dp"
@@ -20,7 +20,7 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/sin_foto_perfil"/>
 
-        <!-- Name -->
+        <!-- Nombre y apellidos -->
         <TextView
             android:id="@+id/vistaPerfil_texto_nombre"
             android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
             android:textColor="@color/cardview_dark_background"
             android:textSize="16sp" />
 
-        <!-- Other details -->
+        <!-- Descripción -->
         <TextView
             android:id="@+id/vistaPerfil_texto_descripcion"
             android:layout_width="wrap_content"
@@ -61,11 +61,10 @@
         android:layout_below="@id/profile_section"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/lista_de_vinilos_perfil"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
-    <!-- Vinyl section -->
+    <!-- Sección de vinilos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vinilos_rv"
         android:layout_width="match_parent"
@@ -76,9 +75,10 @@
         android:layout_marginBottom="16dp"
         android:orientation="horizontal"
         android:scrollbars="none"
-        android:clipToPadding="false"
-        android:background="@color/black" />
+        android:clipToPadding="false" />
 
+
+    <!-- Sección de botones para perfil propio -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
