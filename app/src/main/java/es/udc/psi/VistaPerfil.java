@@ -14,8 +14,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -52,6 +55,7 @@ public class VistaPerfil extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private boolean propio = false;
 
     @Override
@@ -112,7 +116,13 @@ public class VistaPerfil extends AppCompatActivity {
                                     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                                     StorageReference photoReference= storageReference.child("portadas/" +  coleccion.get(i) + ".jpg");
 
-                                    try{
+                                    int finalI = i;
+                                    photoReference.getBytes(1024*1024).addOnSuccessListener(bytes -> {
+                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                        initialData.add(new Vinilo(String.valueOf(coleccion.get(finalI)), bmp));
+                                    });
+
+                                    /*try{
                                         File portadaFile = File.createTempFile("portada" + i, ".jpg");
                                         String finalI = String.valueOf(i);
                                         photoReference.getFile(portadaFile)
@@ -125,9 +135,10 @@ public class VistaPerfil extends AppCompatActivity {
                                                 });
                                     }catch (IOException e) {
                                         throw new RuntimeException(e);
-                                    }
+                                    }*/
 
                                 }
+                                initialData.add(new Vinilo("-1",Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
                                 initRecycler(initialData, propio);
                             }
                         }
@@ -217,6 +228,7 @@ public class VistaPerfil extends AppCompatActivity {
 
             // Recyclerview de colección
             ArrayList<Vinilo> initialData = new ArrayList<>();
+            System.out.println("BBBBBBBBBBBBBB    " + coleccion);
             if(coleccion != null) {
 
                 binding.listaDeVinilosTextview.setText(R.string.vistaPerfil_listaVinilos_text);
@@ -228,7 +240,13 @@ public class VistaPerfil extends AppCompatActivity {
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                     StorageReference photoReference = storageReference.child("portadas/" + coleccion.get(i) + ".jpg");
 
-                    try {
+                    int finalI = i;
+                    photoReference.getBytes(1024*1024).addOnSuccessListener(bytes -> {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        initialData.add(new Vinilo(String.valueOf(finalI), bmp));
+                    });
+
+                    /*try {
                         File portadaFile = File.createTempFile("portada" + i, ".jpg");
                         String finalI = String.valueOf(i);
                         photoReference.getFile(portadaFile)
@@ -241,7 +259,7 @@ public class VistaPerfil extends AppCompatActivity {
                                 });
                     } catch (IOException e) {
                         throw new RuntimeException(e);
-                    }
+                    }*/
                 }
                 initialData.add(new Vinilo("-1",Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
                 initRecycler(initialData, propio);
@@ -268,11 +286,27 @@ public class VistaPerfil extends AppCompatActivity {
                 Log.d("_TAG", " Item " + pos );
 
                 Intent intent = new Intent(getApplicationContext(), VistaVinilo.class);
-                ArrayList<Vinilo> vinilo_item_envio = new ArrayList<>();
-                vinilo_item_envio.add(mAdapter.getItem(pos));
-                intent.putParcelableArrayListExtra(KEY_ITEM, vinilo_item_envio);
-                intent.putExtra(KEY_POS, pos);
-                startActivity(intent);
+                ArrayList<QueryItem> vinilo_item_envio = new ArrayList<>();
+                DocumentReference docRef = db.collection("vinilos").document(mAdapter.getItem(pos).getID());
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc.exists()) {
+                                vinilo_item_envio.add(new QueryItem(doc.get("ID").toString(),
+                                        doc.get("nombre").toString(),
+                                        doc.get("artista").toString(),
+                                        doc.get("sello").toString(),
+                                        doc.get("genero").toString()));
+
+                                intent.putParcelableArrayListExtra(KEY_ITEM, vinilo_item_envio);
+                                intent.putExtra(KEY_POS, pos);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
             }
         });
 

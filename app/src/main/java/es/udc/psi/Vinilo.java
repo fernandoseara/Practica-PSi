@@ -43,6 +43,9 @@ public class Vinilo implements Parcelable {
     public Bitmap getPortada() {
         return portada;
     }
+    public String getID() {
+        return ID;
+    }
 
     public void setPortada(Bitmap portada) {
         this.portada = portada;

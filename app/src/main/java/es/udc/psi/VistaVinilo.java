@@ -102,12 +102,23 @@ public class VistaVinilo extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
 
-                    long size = dataSnapshot.getChildrenCount();
-                    String next_elem = String.valueOf(size);
+                    int exists = 0;
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        if (ds.getValue().toString().equals(id)){
+                            exists = 1;
+                        }
+                    }
 
-                    //TODO: Esto cambiaría si añadimos más colecciones
-                    coleccionRef.child(next_elem).setValue(id);
-                    Toast.makeText(VistaVinilo.this, "Elemento añadido a tu colección correctamente", Toast.LENGTH_SHORT).show();
+                    if (exists == 0){
+                        long size = dataSnapshot.getChildrenCount();
+                        String next_elem = String.valueOf(size);
+
+                        //TODO: Esto cambiaría si añadimos más colecciones
+                        coleccionRef.child(next_elem).setValue(id);
+                        Toast.makeText(VistaVinilo.this, "Elemento añadido a tu colección correctamente", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(VistaVinilo.this, "El elemento ya estaba en tu colección", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
