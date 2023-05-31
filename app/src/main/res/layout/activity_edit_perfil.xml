@@ -32,14 +32,6 @@
         android:layout_margin="16dp"
         android:hint="@string/email_editarPerfil" />
 
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:hint="@string/contrasena_editarPerfil"
-        android:inputType="textPassword" />
-
     <Button
         android:id="@+id/guardarCambiosButton"
         android:layout_width="match_parent"

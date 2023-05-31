@@ -73,7 +73,6 @@ public class VistaPerfil extends AppCompatActivity {
             startActivity(intent_login);
         }
 
-        Toast.makeText(this, email, Toast.LENGTH_SHORT).show();
         if (propio) { // El perfil es el mío
 
             Log.d("_TAG", "Se está viendo el prefil propio.");

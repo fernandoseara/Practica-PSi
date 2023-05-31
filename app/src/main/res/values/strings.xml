@@ -28,4 +28,5 @@
     <string name="editar_perfil_but">Editar perfil</string>
     <string name="nombre_perfil_propio_ejemplo">Cargando...</string>
     <string name="vistaPerfil_listaVinilos_text">Lista de vinilos</string>
+    <string name="editPerfil_done">Usuario correctamente actualizado</string>
 </resources>
