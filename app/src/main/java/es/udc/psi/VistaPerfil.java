@@ -10,14 +10,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,11 +27,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -75,7 +77,7 @@ public class VistaPerfil extends AppCompatActivity {
 
         if (propio) { // El perfil es el mío
 
-            Log.d("_TAG", "Se está viendo el prefil propio.");
+            Log.d("_TAG", "Se está viendo el perfil propio.");
             setContentView(R.layout.activity_vista_perfil_propio);
 
             binding2 = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil_propio);
@@ -84,7 +86,9 @@ public class VistaPerfil extends AppCompatActivity {
             mDatabase.child("Users").child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
+
+                    if (snapshot.exists()) {    //  Se está logueado
+
                         String fullname = snapshot.child("name").getValue(String.class) + " " +
                                 snapshot.child("lastname").getValue(String.class);
 
@@ -106,8 +110,6 @@ public class VistaPerfil extends AppCompatActivity {
 
                                 ArrayList<Vinilo> initialData = new ArrayList<>();
 
-                                //initialData.add("000", new Vinilo(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
-
                                 // Para cada vinilo de la coleccion
                                 for(int i = 0; i<coleccion.size(); i++) {
 
@@ -119,29 +121,20 @@ public class VistaPerfil extends AppCompatActivity {
                                     photoReference.getBytes(1024*1024).addOnSuccessListener(bytes -> {
                                         Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                         initialData.add(new Vinilo(String.valueOf(coleccion.get(finalI)), bmp));
+
+                                        if(finalI==coleccion.size()-1){ initRecycler(initialData, propio); }
+
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            Toast.makeText(VistaPerfil.this, "La BD falla recogiendo las imágenes de tu colección.", Toast.LENGTH_SHORT).show();
+                                        }
                                     });
-
-                                    /*try{
-                                        File portadaFile = File.createTempFile("portada" + i, ".jpg");
-                                        String finalI = String.valueOf(i);
-                                        photoReference.getFile(portadaFile)
-                                                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                                    @Override
-                                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                                        Bitmap bmp = BitmapFactory.decodeFile(portadaFile.getAbsolutePath());
-                                                        initialData.add(new Vinilo(finalI, bmp));
-                                                    }
-                                                });
-                                    }catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }*/
-
                                 }
-                                initialData.add(new Vinilo("-1",Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
-                                initRecycler(initialData, propio);
+
                             }
                         }
-                    }else{
+                    }else{  // No se está logueado -> lanza Login
                         Intent intent_login = new Intent(getApplicationContext(), Login.class);
                         startActivity(intent_login);
                     }
@@ -221,13 +214,14 @@ public class VistaPerfil extends AppCompatActivity {
                                 binding.vistaPerfilFotoPerfil.setImageBitmap(bitmap);
                             }
                         });
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
             // Recyclerview de colección
             ArrayList<Vinilo> initialData = new ArrayList<>();
-            System.out.println("BBBBBBBBBBBBBB    " + coleccion);
+
             if(coleccion != null) {
 
                 binding.listaDeVinilosTextview.setText(R.string.vistaPerfil_listaVinilos_text);
@@ -243,25 +237,15 @@ public class VistaPerfil extends AppCompatActivity {
                     photoReference.getBytes(1024*1024).addOnSuccessListener(bytes -> {
                         Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         initialData.add(new Vinilo(String.valueOf(finalI), bmp));
-                    });
 
-                    /*try {
-                        File portadaFile = File.createTempFile("portada" + i, ".jpg");
-                        String finalI = String.valueOf(i);
-                        photoReference.getFile(portadaFile)
-                                .addOnSuccessListener(taskSnapshot -> {
-                                    Bitmap bmp = BitmapFactory.decodeFile(portadaFile.getAbsolutePath());
-                                    initialData.add(new Vinilo(finalI, bmp));
-                                })
-                                .addOnFailureListener(exception -> {
-                                    Toast.makeText(this, "No soy capaz de cargar esta imagen", Toast.LENGTH_SHORT).show();
-                                });
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }*/
+                        if(finalI==coleccion.size()-1){ initRecycler(initialData, propio); }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(VistaPerfil.this, "La BD falla recogiendo algunas imágenes de esta colección.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-                initialData.add(new Vinilo("-1",Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)));
-                initRecycler(initialData, propio);
             }
         }
     }
@@ -282,32 +266,122 @@ public class VistaPerfil extends AppCompatActivity {
         mAdapter.setClickListener(new ViniloAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, int pos) {
-                Log.d("_TAG", " Item " + pos );
+                Log.d("_TAG", " Pulsado el Item " + pos + " en el RecyclerView" );
 
-                Intent intent = new Intent(getApplicationContext(), VistaVinilo.class);
-                ArrayList<QueryItem> vinilo_item_envio = new ArrayList<>();
-                DocumentReference docRef = db.collection("vinilos").document(mAdapter.getItem(pos).getID());
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot doc = task.getResult();
-                            if (doc.exists()) {
-                                vinilo_item_envio.add(new QueryItem(doc.get("ID").toString(),
-                                        doc.get("nombre").toString(),
-                                        doc.get("artista").toString(),
-                                        doc.get("sello").toString(),
-                                        doc.get("genero").toString()));
+                // Mi perfil: ¿Ver vinilo o quitar de colección?
+                if(propio){ openOptionMenu(view, pos); }
 
-                                intent.putParcelableArrayListExtra(KEY_ITEM, vinilo_item_envio);
-                                intent.putExtra(KEY_POS, pos);
-                                startActivity(intent);
+                // Otro perfil: Que pulsar vinilo me lleve al vinilo
+                else{
+                    Intent intent = new Intent(getApplicationContext(), VistaVinilo.class);
+                    ArrayList<QueryItem> vinilo_item_envio = new ArrayList<>();
+                    DocumentReference docRef = db.collection("vinilos").document(mAdapter.getItem(pos).getID());
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot doc = task.getResult();
+                                if (doc.exists()) {
+                                    vinilo_item_envio.add(new QueryItem(doc.get("ID").toString(),
+                                            doc.get("nombre").toString(),
+                                            doc.get("artista").toString(),
+                                            doc.get("sello").toString(),
+                                            doc.get("genero").toString()));
+
+                                    intent.putParcelableArrayListExtra(KEY_ITEM, vinilo_item_envio);
+                                    intent.putExtra(KEY_POS, pos);
+                                    startActivity(intent);
+                                }
                             }
                         }
-                    }
-                });
+                    });
+
+                }
             }
         });
+    }
+
+    public void openOptionMenu(View v,final int position) {
+
+        PopupMenu popup = new PopupMenu(v.getContext(), v);
+        popup.getMenuInflater().inflate(R.menu.menu_contextual_rv_perfil, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+
+                    // Ver el vinilo abierto
+                    case R.id.menuContextualRVPerfil_ver_vinilo:
+
+                        Intent intent = new Intent(getApplicationContext(), VistaVinilo.class);
+                        ArrayList<QueryItem> vinilo_item_envio = new ArrayList<>();
+                        DocumentReference docRef = db.collection("vinilos").document(mAdapter.getItem(position).getID());
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot doc = task.getResult();
+                                    if (doc.exists()) {
+                                        vinilo_item_envio.add(new QueryItem(doc.get("ID").toString(),
+                                                doc.get("nombre").toString(),
+                                                doc.get("artista").toString(),
+                                                doc.get("sello").toString(),
+                                                doc.get("genero").toString()));
+
+                                        intent.putParcelableArrayListExtra(KEY_ITEM, vinilo_item_envio);
+                                        intent.putExtra(KEY_POS, position);
+                                        startActivity(intent);
+                                    }
+                                }
+                            }
+                        });
+                        return true;
+
+                    // Quitar el vinilo de la lista
+                    case R.id.menuContextualRVPerfil_quitar_lista:
+
+                        // Referencias a BD
+                        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+                        DatabaseReference coleccionRef = mDatabase.child(currentUser.getUid()).child("collections").child("0");
+
+                        // Tomo ID de vinilo pulsado
+                        String id_borrar = mAdapter.getItem(position).getID();
+                        Toast.makeText(VistaPerfil.this, "ID = " + id_borrar, Toast.LENGTH_SHORT).show();
+
+                        // Borramos el vinilo concreto (también repetidos)
+                        Query removeQuery = coleccionRef.equalTo(id_borrar);
+                        removeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot removeSnapshot: dataSnapshot.getChildren()) {
+                                    DatabaseReference tmp_ref = removeSnapshot.getRef();
+                                    tmp_ref.removeValue();
+
+                                    // Enseño un Snackbar con "deshacer"
+                                    Snackbar snackbar = Snackbar.make(v, "Vinilo eliminado correctamente", Snackbar.LENGTH_LONG);
+                                    snackbar.setAction("Deshacer", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            tmp_ref.setValue(id_borrar);
+                                        }
+                                    });
+                                    snackbar.show();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Toast.makeText(VistaPerfil.this, "Hay algún error. No puedo borrar este vinilo de tu colección", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        return true;
+                }
+                return true;
+            }
+        });
+        popup.show();
 
     }
+
 }

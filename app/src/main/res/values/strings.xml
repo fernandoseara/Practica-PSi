@@ -29,4 +29,6 @@
     <string name="nombre_perfil_propio_ejemplo">Cargando...</string>
     <string name="vistaPerfil_listaVinilos_text">Lista de vinilos</string>
     <string name="editPerfil_done">Usuario correctamente actualizado</string>
+    <string name="menuContextual_quitar_de_la_lista">Quitar de la lista</string>
+    <string name="menuContextual_ver_vinilo">Ver vinilo</string>
 </resources>

@@ -67,8 +67,6 @@ public class MainActivity extends AppCompatActivity{
 
     String uid;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,14 +155,13 @@ public class MainActivity extends AppCompatActivity{
                             startActivity(intent);
 
                         } else {
-
                             Toast.makeText(MainActivity.this, "Este perfil no existe, ¿estás escribiéndolo bien?", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Manejar cualquier error de consulta aquí
+                        Toast.makeText(MainActivity.this, "Hay algún error en la base de datos... No puedo buscar esto.", Toast.LENGTH_SHORT).show();
                     }
                 });
 
