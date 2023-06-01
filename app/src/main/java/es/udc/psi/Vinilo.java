@@ -24,7 +24,6 @@ public class Vinilo implements Parcelable {
     protected Vinilo(Parcel in) {
         titulo = in.readString();
         ID = in.readString();
-        //portada = in.read();      // TODO: Habria que ver como se haria esto
         description = in.readString();
     }
 
@@ -59,7 +58,7 @@ public class Vinilo implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(titulo);
-        // parcel. TODO: meter imagen de alguna forma
+        parcel.writeString(ID);
         parcel.writeString(description);
     }
 }

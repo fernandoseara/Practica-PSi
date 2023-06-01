@@ -41,8 +41,8 @@
     <string name="descripcion_guardarCambios_error">La descripción es necesaria</string>
     <string name="titulo_busqueda">Resultados de la búsqueda:  </string>
     <string name="login_empty_emailOrPass_toast">Introduce el email y la contraseña</string>
-    <string name="login_success_toast">Autentificación exitosa</string>
-    <string name="login_fail_toast">Autentificación falló</string>
+    <string name="login_success_toast">Autenticación exitosa</string>
+    <string name="login_fail_toast">La autenticación falló</string>
     <string name="emptyUser_buscarPerfiles_toast">Por favor, introduce un email de usuario</string>
     <string name="usuarioNoEncontrado_buscarPerfiles_toast">Este perfil no existe, ¿estás escribiéndolo bien?</string>
     <string name="fallo_bd_buscarPerfiles_toast">Hay algún error en la base de datos... No puedo buscar esto.</string>

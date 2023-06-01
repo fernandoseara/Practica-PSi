@@ -110,8 +110,7 @@ public class Register extends AppCompatActivity {
 
 
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ||
-                        TextUtils.isEmpty(name) || TextUtils.isEmpty(lastname) ||
-                        TextUtils.isEmpty(description)) {
+                        TextUtils.isEmpty(name)) {
                     Toast.makeText(Register.this, R.string.emptyFields_register_toast,
                             Toast.LENGTH_SHORT).show();
                 } else {
@@ -141,12 +140,12 @@ public class Register extends AppCompatActivity {
 
                                         // Listo: Creo el objeto User con estos datos y lanzo este perfil.
                                         createUserData(uid, email, name, lastname, description);
-
                                         Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
+                                        intent.putExtra("email", email);
                                         startActivity(intent);
                                         finish();
+
                                     } else {
-                                        // If sign in fails, display a message to the user.
                                         Log.w("TAG", "createUserWithEmail:failure", task.getException());
                                         Toast.makeText(Register.this, R.string.registerFailed_toast,
                                                 Toast.LENGTH_SHORT).show();
@@ -183,7 +182,6 @@ public class Register extends AppCompatActivity {
     );
 
     private void uploadImageToFirebase(Uri imageUri, String uid) {
-        /* TODO establecer path foto */
         String path = "profilePhotos/" + uid + ".jpg";
         StorageReference fileRef = mStorage.child(path);
         fileRef.putFile(imageUri);

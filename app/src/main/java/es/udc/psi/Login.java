@@ -80,8 +80,7 @@ public class Login extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        //Log.d(TAG, "signInWithEmail:success");
+
                                         Toast.makeText(Login.this, R.string.login_success_toast,
                                                 Toast.LENGTH_SHORT).show();
                                         /* TODO cambiar a la activity que queramos */
@@ -89,8 +88,7 @@ public class Login extends AppCompatActivity {
                                         startActivity(intent);
                                         finish();
                                     } else {
-                                        // If sign in fails, display a message to the user.
-                                        //Log.w(TAG, "signInWithEmail:failure", task.getException());
+
                                         Toast.makeText(Login.this, R.string.login_fail_toast,
                                                 Toast.LENGTH_SHORT).show();
                                     }

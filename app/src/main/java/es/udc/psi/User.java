@@ -16,10 +16,9 @@ public class User {
         this.lastname = lastname;
         this.description = description;
 
-        // Añado una colección de prueba
         ArrayList<ArrayList<String>> cols = new ArrayList<>();
         ArrayList<String> col = new ArrayList<>();
-        col.add("001");
+        col.add("001"); // vinilo de prueba
         cols.add(col);
         this.collections = cols;
     }

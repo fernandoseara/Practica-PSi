@@ -156,11 +156,20 @@ public class EditPerfil extends AppCompatActivity {
                 currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+
+                        // Borra la foto de perfil almacenada en Storage
                         StorageReference photoReference = mStorage.child("profilePhotos/" +
                                 currentUser.getUid() + ".jpg");
                         photoReference.delete();
-                        usersRef.child(currentUser.getUid()).removeValue();
 
+                        // Borra la información del usuario en Realtime Database
+                        usersRef.child(currentUser.getUid()).removeValue();
+                        currentUser.delete();
+
+                        // Borra el usuario de Authentication
+                        currentUser.delete();
+
+                        // Listo, vuelve al menú
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -201,22 +210,12 @@ public class EditPerfil extends AppCompatActivity {
             editTextName.requestFocus();
             return;
         }
-        if(lastname.isEmpty()){
-            editTextLastname.setError(getString(R.string.lastname_guardarCambios_error));
-            editTextLastname.requestFocus();
-            return;
-        }
-        if(description.isEmpty()){
-            editTextDescription.setError(getString(R.string.descripcion_guardarCambios_error));
-            editTextDescription.requestFocus();
-            return;
-        }
 
-        //Actualizar datos de usuario en Firebase
-        usersRef.child("name").setValue(name);
-        usersRef.child("lastname").setValue(lastname);
-        usersRef.child("description").setValue(description);
-        usersRef.child("email").setValue(email);
+        // Actualizar datos de usuario en Firebase
+        usersRef.child(currentUser.getUid()).child("name").setValue(name);
+        usersRef.child(currentUser.getUid()).child("lastname").setValue(lastname);
+        usersRef.child(currentUser.getUid()).child("description").setValue(description);
+        usersRef.child(currentUser.getUid()).child("email").setValue(email);
 
         // Listo: volvemos al perfil ahora actualizado
         Toast.makeText(this, R.string.editPerfil_done, Toast.LENGTH_SHORT).show();
@@ -227,9 +226,7 @@ public class EditPerfil extends AppCompatActivity {
 
     }
 
-    ActivityResultLauncher<Intent> my_startActivityForResult = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
+    ActivityResultLauncher<Intent> my_startActivityForResult = registerForActivityResult( new ActivityResultContracts.StartActivityForResult(), result->{
                 if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
                     Intent data = result.getData();
                     if (data != null) {

@@ -213,7 +213,6 @@ public class MainActivity extends AppCompatActivity{
                                 Log.d("_TAG", "Error getting documents: ", task.getException());
                             }
                         });
-
             }
         });
 
