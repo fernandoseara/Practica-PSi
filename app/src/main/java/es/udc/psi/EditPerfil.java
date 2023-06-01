@@ -172,6 +172,8 @@ public class EditPerfil extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();
+
+                        Toast.makeText(EditPerfil.this, R.string.eliminarPerfil_toast, Toast.LENGTH_SHORT).show();
                     }
                 });
                 dialog.dismiss();

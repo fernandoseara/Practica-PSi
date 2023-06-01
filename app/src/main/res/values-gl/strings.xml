@@ -78,4 +78,5 @@
     <string name="mensaje_main_title">Mensaxe</string>
     <string name="perfil_menu_title">Perfil</string>
     <string name="acerca_de_menu_title">Sobre</string>
+    <string name="eliminarPerfil_toast">Perfil eliminado correctamente</string>
 </resources>
