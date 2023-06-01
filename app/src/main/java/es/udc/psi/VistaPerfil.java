@@ -236,7 +236,7 @@ public class VistaPerfil extends AppCompatActivity {
                     int finalI = i;
                     photoReference.getBytes(1024*1024).addOnSuccessListener(bytes -> {
                         Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        initialData.add(new Vinilo(String.valueOf(finalI), bmp));
+                        initialData.add(new Vinilo(String.valueOf(coleccion.get(finalI)), bmp));
 
                         if(finalI==coleccion.size()-1){ initRecycler(initialData, propio); }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -266,7 +266,6 @@ public class VistaPerfil extends AppCompatActivity {
         mAdapter.setClickListener(new ViniloAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, int pos) {
-                Log.d("_TAG", " Pulsado el Item " + pos + " en el RecyclerView" );
 
                 // Mi perfil: ¿Ver vinilo o quitar de colección?
                 if(propio){ openOptionMenu(view, pos); }
@@ -276,6 +275,7 @@ public class VistaPerfil extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), VistaVinilo.class);
                     ArrayList<QueryItem> vinilo_item_envio = new ArrayList<>();
                     DocumentReference docRef = db.collection("vinilos").document(mAdapter.getItem(pos).getID());
+
                     docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -295,7 +295,7 @@ public class VistaPerfil extends AppCompatActivity {
                             }
                         }
                     });
-
+                    return;
                 }
             }
         });
@@ -317,6 +317,7 @@ public class VistaPerfil extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), VistaVinilo.class);
                         ArrayList<QueryItem> vinilo_item_envio = new ArrayList<>();
                         DocumentReference docRef = db.collection("vinilos").document(mAdapter.getItem(position).getID());
+
                         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
