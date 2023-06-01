@@ -187,16 +187,5 @@ public class Register extends AppCompatActivity {
         String path = "profilePhotos/" + uid + ".jpg";
         StorageReference fileRef = mStorage.child(path);
         fileRef.putFile(imageUri);
-
-        /*
-
-        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-            }
-        })
-
-         */
     }
 }
