@@ -16,7 +16,7 @@
     <string name="name">Name</string>
     <string name="lastname">Lastname</string>
     <string name="description">Description</string>
-    <string name="bienvenido_a_tocappdiscos_echale_un_ojo_a_las_cosas_que_puedes_hacer">Wellcome to TocAppDiscos! \n\nTake a look at the thing you can do...</string>
+    <string name="bienvenido_a_tocappdiscos_echale_un_ojo_a_las_cosas_que_puedes_hacer">Welcome to TocAppDiscos! \n\nTake a look at the thing you can do...</string>
     <string name="nombre_editarPerfil">Name</string>
     <string name="apellidos_editarPerfil">Lastname</string>
     <string name="description_editarPerfil">Description</string>
