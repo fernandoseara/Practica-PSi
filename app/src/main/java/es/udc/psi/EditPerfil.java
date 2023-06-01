@@ -156,7 +156,11 @@ public class EditPerfil extends AppCompatActivity {
                 currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        StorageReference photoReference = mStorage.child("profilePhotos/" +
+                                currentUser.getUid() + ".jpg");
+                        photoReference.delete();
                         usersRef.child(currentUser.getUid()).removeValue();
+
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();
