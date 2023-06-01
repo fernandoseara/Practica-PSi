@@ -68,8 +68,8 @@ public class VistaVinilo extends AppCompatActivity {
 
         binding.vistaViniloTextoArtista.setText(artista);
         binding.vistaViniloTextoNombre.setText(nombre);
-        binding.vistaViniloTextoGenero.setText("Género: " + genero);
-        binding.vistaViniloTextoSello.setText("Sello: " + sello);
+        binding.vistaViniloTextoGenero.setText(getString(R.string.genero_vistaVinilo) + " " + genero);
+        binding.vistaViniloTextoSello.setText(getString(R.string.sello_vistaVinilo) + " " + sello);
 
 
         // Portada (es un poco más largo)
@@ -111,22 +111,22 @@ public class VistaVinilo extends AppCompatActivity {
                     }
 
                     // Sí, se inserta
-                    if (exists){
+                    if (!exists){
                         long size = dataSnapshot.getChildrenCount();
                         String next_elem = String.valueOf(size);
 
                         //TODO: Esto cambiaría si añadimos más colecciones
                         coleccionRef.child(next_elem).setValue(id);
-                        Toast.makeText(VistaVinilo.this, "Elemento añadido a tu colección correctamente", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VistaVinilo.this, R.string.añadirVinilo_vistaVinilo_toast, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(VistaVinilo.this, "Este elemento ya está en tu colección", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VistaVinilo.this, R.string.viniloEnColeccion_vistaVinilo_toast, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError error_db) {
-                Toast.makeText(VistaVinilo.this, "Hay un problema con la BD. No puedo añadirlo.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VistaVinilo.this, R.string.errorBD_vistaVinilo_toast, Toast.LENGTH_SHORT).show();
                 return;
             }
         });
@@ -135,11 +135,11 @@ public class VistaVinilo extends AppCompatActivity {
 
     public void compartirVinilo(View view){
 
-        String textoACompartir = "Te envío este vinilo desde TocAppDiscos: \n" + artista + " - " + nombre + " (" + sello + ")";
+        String textoACompartir = getString(R.string.compartir_texto) + artista + " - " + nombre + " (" + sello + ")";
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, textoACompartir);
-        startActivity(Intent.createChooser(intent, "Compartir usando..."));
+        startActivity(Intent.createChooser(intent, getString(R.string.compartir_titulo)));
 
     }
 }

@@ -38,7 +38,7 @@ public class ListaQuery extends AppCompatActivity {
         Intent intent = getIntent();
         this.modo = intent.getStringExtra("modo");
 
-        String texto_busqueda = "Resultados de la búsqueda:  " + intent.getStringExtra("busqueda");
+        String texto_busqueda = getString(R.string.titulo_busqueda) + intent.getStringExtra("busqueda");
         binding.listaQueryTermino.setText(texto_busqueda);
 
         ArrayList<QueryItem> lista = intent.getParcelableArrayListExtra("resultado");

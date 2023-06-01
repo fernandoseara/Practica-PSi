@@ -94,7 +94,7 @@ public class EditPerfil extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EditPerfil.this, "La base de datos está fallando. ¿Tienes conexión?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPerfil.this, R.string.fallo_bd_editarPerfil_toast, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -104,14 +104,14 @@ public class EditPerfil extends AppCompatActivity {
 
         // Crear un diálogo
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("¿Borrar perfil?");
-        builder.setMessage("¿Seguro que quieres borrar este perfil? Esta acción no puede deshacerse (en serio).");
+        builder.setTitle(R.string.borrarPerfil_title);
+        builder.setMessage(R.string.borrarPerfil_mensaje);
 
         // Botón de cancelar
-        builder.setNegativeButton("¡No! Cancelar", null);
+        builder.setNegativeButton(R.string.borrarPerfil_cancelar, null);
 
         // Botón de borrar perfil
-        builder.setPositiveButton("Sí, hazlo", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.borrarPerfil_confirmar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -140,22 +140,22 @@ public class EditPerfil extends AppCompatActivity {
 
         // Comprobación de errores
         if(email.isEmpty()){
-            editTextEmail.setError("Email is required");
+            editTextEmail.setError(getString(R.string.email_guardarCambios_error));
             editTextEmail.requestFocus();
             return;
         }
         if(name.isEmpty()){
-            editTextName.setError("Name is required");
+            editTextName.setError(getString(R.string.name_guardarCambios_error));
             editTextName.requestFocus();
             return;
         }
         if(lastname.isEmpty()){
-            editTextLastname.setError("Lastname is required");
+            editTextLastname.setError(getString(R.string.lastname_guardarCambios_error));
             editTextLastname.requestFocus();
             return;
         }
         if(description.isEmpty()){
-            editTextDescription.setError("Description is required");
+            editTextDescription.setError(getString(R.string.descripcion_guardarCambios_error));
             editTextDescription.requestFocus();
             return;
         }

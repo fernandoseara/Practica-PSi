@@ -27,7 +27,7 @@
                 android:id="@+id/query_item_nombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre"
+                android:text="@string/nombre_query_item"
                 android:textColor="@color/black"
                 android:textSize="13sp"/>
 
@@ -36,7 +36,7 @@
                 android:id="@+id/query_item_artista"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Artista"
+                android:text="@string/artista_query_item"
                 android:textColor="@color/gray"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"

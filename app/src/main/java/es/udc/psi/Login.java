@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
                 password = String.valueOf(editTextPassword.getText());
 
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(Login.this, "Enter email and password",
+                    Toast.makeText(Login.this, R.string.login_empty_emailOrPass_toast,
                             Toast.LENGTH_SHORT).show();
                 } else {
                     mAuth.signInWithEmailAndPassword(email, password)
@@ -82,7 +82,7 @@ public class Login extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         //Log.d(TAG, "signInWithEmail:success");
-                                        Toast.makeText(Login.this, "Authentication success.",
+                                        Toast.makeText(Login.this, R.string.login_success_toast,
                                                 Toast.LENGTH_SHORT).show();
                                         /* TODO cambiar a la activity que queramos */
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -91,7 +91,7 @@ public class Login extends AppCompatActivity {
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         //Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                        Toast.makeText(Login.this, "Authentication failed.",
+                                        Toast.makeText(Login.this, R.string.login_fail_toast,
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 }

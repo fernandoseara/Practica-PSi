@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 String texto = buscarPerfiles_editText.getText().toString();
                 if(texto.equals("")){
-                    Toast.makeText(MainActivity.this, "Por favor, pon algo en el texto editable", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.emptyUser_buscarPerfiles_toast, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -155,13 +155,13 @@ public class MainActivity extends AppCompatActivity{
                             startActivity(intent);
 
                         } else {
-                            Toast.makeText(MainActivity.this, "Este perfil no existe, ¿estás escribiéndolo bien?", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, R.string.usuarioNoEncontrado_buscarPerfiles_toast, Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(MainActivity.this, "Hay algún error en la base de datos... No puedo buscar esto.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.fallo_bd_buscarPerfiles_toast, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity{
                 String texto = buscarVinilos_editText.getText().toString();
 
                 if(texto.equals("")){
-                    Toast.makeText(MainActivity.this, "Por favor, pon algo en el texto editable", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.emptyVinilo_buscarVinilos_toast, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -283,8 +283,8 @@ public class MainActivity extends AppCompatActivity{
 
                 // Clicado item de Acerca De -> Enseñar la info del Acerca De
                 new AlertDialog.Builder(this)
-                        .setMessage("Autores: \n Fernando Seara Romera\n Sergio Marcos Vázquez\nPedro Pazos Curra\nEduardo Perez Fraguela")
-                        .setNegativeButton("Ok", null)
+                        .setMessage(R.string.autores_acercaDe)
+                        .setNegativeButton(R.string.salir_de_acercaDe, null)
                         .show();
                 return true;
 

@@ -112,7 +112,7 @@ public class Register extends AppCompatActivity {
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ||
                         TextUtils.isEmpty(name) || TextUtils.isEmpty(lastname) ||
                         TextUtils.isEmpty(description)) {
-                    Toast.makeText(Register.this, "Enter all fields",
+                    Toast.makeText(Register.this, R.string.emptyFields_register_toast,
                             Toast.LENGTH_SHORT).show();
                 } else {
                     mAuth.createUserWithEmailAndPassword(email, password)
@@ -123,7 +123,7 @@ public class Register extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         // Log.d(TAG, "createUserWithEmail:success");
                                         // FirebaseUser user = mAuth.getCurrentUser();
-                                        Toast.makeText(Register.this, "Authentication successful.",
+                                        Toast.makeText(Register.this, R.string.registroSuccess_toast,
                                                 Toast.LENGTH_SHORT).show();
 
                                         String uid = mAuth.getCurrentUser().getUid();
@@ -148,7 +148,7 @@ public class Register extends AppCompatActivity {
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                                        Toast.makeText(Register.this, "Authentication failed.",
+                                        Toast.makeText(Register.this, R.string.registerFailed_toast,
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 }

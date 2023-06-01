@@ -12,7 +12,7 @@
         android:id="@+id/listaQuery_termino"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Resultados de la búsqueda:"
+        android:text="@string/titulo_busqueda"
         android:layout_margin="10dp"></TextView>
 
     <androidx.recyclerview.widget.RecyclerView

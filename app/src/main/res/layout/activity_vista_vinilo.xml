@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:text="Nombre del vinilo"
+                android:text="@string/nombre_vinilo_title"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:text="Grupo o artista"
+                android:text="@string/artista_vinilo_title"
                 android:textColor="@color/gray"
                 android:textSize="16sp" />
 
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et ante vitae magna aliquam dapibus."
+                android:text="@string/genero_vinilo_default"
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
 
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et ante vitae magna aliquam dapibus."
+                android:text="@string/sello_vinilo_default"
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
 

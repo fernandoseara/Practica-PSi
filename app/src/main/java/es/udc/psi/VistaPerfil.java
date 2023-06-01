@@ -127,7 +127,7 @@ public class VistaPerfil extends AppCompatActivity {
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception exception) {
-                                            Toast.makeText(VistaPerfil.this, "La BD falla recogiendo las imágenes de tu colección.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(VistaPerfil.this, R.string.fallo_imagenesColeccion_toast, Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
@@ -141,7 +141,7 @@ public class VistaPerfil extends AppCompatActivity {
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(VistaPerfil.this, "La base de datos está fallando. ¿Tienes conexión?", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VistaPerfil.this, R.string.falloBD_vistaPerfil_toast, Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -185,7 +185,7 @@ public class VistaPerfil extends AppCompatActivity {
         }
         else { // El perfil no es el mío
 
-            Log.d("_TAG", "Se está viendo un prefil ajeno.");
+            Log.d("_TAG", "Se está viendo un perfil ajeno.");
 
             setContentView(R.layout.activity_vista_perfil);
             binding = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil);
@@ -242,7 +242,7 @@ public class VistaPerfil extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText(VistaPerfil.this, "La BD falla recogiendo algunas imágenes de esta colección.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VistaPerfil.this, R.string.falloImagenesColeccionAjena_toast, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -360,8 +360,8 @@ public class VistaPerfil extends AppCompatActivity {
                                     tmp_ref.removeValue();
 
                                     // Enseño un Snackbar con "deshacer"
-                                    Snackbar snackbar = Snackbar.make(v, "Vinilo eliminado correctamente", Snackbar.LENGTH_LONG);
-                                    snackbar.setAction("Deshacer", new View.OnClickListener() {
+                                    Snackbar snackbar = Snackbar.make(v, R.string.viniloEliminado_snackbar, Snackbar.LENGTH_LONG);
+                                    snackbar.setAction(R.string.deshacer_eliminarVinilo_snackbar, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             tmp_ref.setValue(id_borrar);
@@ -372,7 +372,7 @@ public class VistaPerfil extends AppCompatActivity {
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                Toast.makeText(VistaPerfil.this, "Hay algún error. No puedo borrar este vinilo de tu colección", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VistaPerfil.this, R.string.errorBD_borrarVinilo_toast, Toast.LENGTH_SHORT).show();
                             }
                         });
 

@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hola, aquí va a ir la actividad de mensajería instantánea"
+            android:text="@string/mensaje_texto"
             android:layout_gravity="center"
             android:layout_margin="60dp"/>
 
@@ -45,13 +45,13 @@
             android:id="@+id/mensaje_hub_tab_buscar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Buscar" />
+            android:text="@string/buscar_texto" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/mensaje_hub_tab_mensaje"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mensaje" />
+            android:text="@string/mensaje_title" />
 
     </com.google.android.material.tabs.TabLayout>
 
