@@ -96,8 +96,10 @@ public class VistaPerfil extends AppCompatActivity {
                         binding2.vistaPerfilTextoEmail.setText(snapshot.child("email").getValue(String.class));
                         binding2.vistaPerfilTextoDescripcion.setText(snapshot.child("description").getValue(String.class));
 
-                        GenericTypeIndicator<ArrayList<ArrayList<String>>> typeIndicator = new GenericTypeIndicator<ArrayList<ArrayList<String>>>() {};
+                        GenericTypeIndicator<ArrayList<ArrayList<String>>> typeIndicator = new GenericTypeIndicator<ArrayList<ArrayList<String>>>(){};
                         ArrayList<ArrayList<String>> colecciones = snapshot.child("collections").getValue(typeIndicator);
+
+                        System.out.println(colecciones);
 
                         if (colecciones != null) {
 
@@ -106,30 +108,31 @@ public class VistaPerfil extends AppCompatActivity {
                             // Para cada coleccion
                             for (ArrayList<String> coleccion : colecciones) {
 
-                                // TODO: Aún hay que implementar un mecanismo para poder poner más de una colección.
-
-                                ArrayList<Vinilo> initialData = new ArrayList<>();
-
                                 // Para cada vinilo de la coleccion
+                                ArrayList<Vinilo> initialData = new ArrayList<>();
                                 for(int i = 0; i<coleccion.size(); i++) {
 
                                     // Pongo su portada en el imageview del recycler
                                     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                                     StorageReference photoReference= storageReference.child("portadas/" +  coleccion.get(i) + ".jpg");
 
-                                    int finalI = i;
-                                    photoReference.getBytes(1024*1024).addOnSuccessListener(bytes -> {
-                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                        initialData.add(new Vinilo(String.valueOf(coleccion.get(finalI)), bmp));
+                                    if(coleccion.get(i) != null) {
+                                        int finalI = i;
+                                        photoReference.getBytes(1024 * 1024).addOnSuccessListener(bytes -> {
+                                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                            initialData.add(new Vinilo(String.valueOf(coleccion.get(finalI)), bmp));
 
-                                        if(finalI==coleccion.size()-1){ initRecycler(initialData, propio); }
+                                            if (finalI == coleccion.size() - 1) {
+                                                initRecycler(initialData, propio);
+                                            }
 
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception exception) {
-                                            Toast.makeText(VistaPerfil.this, R.string.fallo_imagenesColeccion_toast, Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                // No se saca Toast porque esto se ejecuta cuando se borra un vinilo (está bien)
+                                            }
+                                        });
+                                    }
                                 }
 
                             }
@@ -205,7 +208,7 @@ public class VistaPerfil extends AppCompatActivity {
             mStorage = FirebaseStorage.getInstance().getReference();
             StorageReference profilePhotoReference = mStorage.child("profilePhotos/" + uid + ".jpg");
             try {
-                File localFile = File.createTempFile("profile",".jpg");
+                File localFile = File.createTempFile("profile", ".jpg");
                 profilePhotoReference.getFile(localFile)
                         .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
@@ -222,7 +225,7 @@ public class VistaPerfil extends AppCompatActivity {
             // Recyclerview de colección
             ArrayList<Vinilo> initialData = new ArrayList<>();
 
-            if(coleccion != null) {
+            if (coleccion != null) {
 
                 binding.listaDeVinilosTextview.setText(R.string.vistaPerfil_listaVinilos_text);
 
@@ -233,18 +236,23 @@ public class VistaPerfil extends AppCompatActivity {
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                     StorageReference photoReference = storageReference.child("portadas/" + coleccion.get(i) + ".jpg");
 
-                    int finalI = i;
-                    photoReference.getBytes(1024*1024).addOnSuccessListener(bytes -> {
-                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        initialData.add(new Vinilo(String.valueOf(coleccion.get(finalI)), bmp));
+                    if (coleccion.get(i) != null) {
 
-                        if(finalI==coleccion.size()-1){ initRecycler(initialData, propio); }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText(VistaPerfil.this, R.string.falloImagenesColeccionAjena_toast, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        int finalI = i;
+                        photoReference.getBytes(1024 * 1024).addOnSuccessListener(bytes -> {
+                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            initialData.add(new Vinilo(String.valueOf(coleccion.get(finalI)), bmp));
+
+                            if (finalI == coleccion.size() - 1) {
+                                initRecycler(initialData, propio);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                Toast.makeText(VistaPerfil.this, R.string.falloImagenesColeccionAjena_toast, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -348,26 +356,31 @@ public class VistaPerfil extends AppCompatActivity {
 
                         // Tomo ID de vinilo pulsado
                         String id_borrar = mAdapter.getItem(position).getID();
-                        Toast.makeText(VistaPerfil.this, "ID = " + id_borrar, Toast.LENGTH_SHORT).show();
 
                         // Borramos el vinilo concreto (también repetidos)
-                        Query removeQuery = coleccionRef.equalTo(id_borrar);
+                        Query removeQuery = coleccionRef;
                         removeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot removeSnapshot: dataSnapshot.getChildren()) {
-                                    DatabaseReference tmp_ref = removeSnapshot.getRef();
-                                    tmp_ref.removeValue();
+                                for (DataSnapshot removeSnapshot : dataSnapshot.getChildren()) {
 
-                                    // Enseño un Snackbar con "deshacer"
-                                    Snackbar snackbar = Snackbar.make(v, R.string.viniloEliminado_snackbar, Snackbar.LENGTH_LONG);
-                                    snackbar.setAction(R.string.deshacer_eliminarVinilo_snackbar, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            tmp_ref.setValue(id_borrar);
-                                        }
-                                    });
-                                    snackbar.show();
+                                    String valor = removeSnapshot.getValue(String.class);
+
+                                    // Encontrado: Borro
+                                    if (Objects.equals(valor, id_borrar)) {
+                                        DatabaseReference tmp_ref = removeSnapshot.getRef();
+                                        tmp_ref.removeValue();
+
+                                        // Enseño un Snackbar con "deshacer"
+                                        Snackbar snackbar = Snackbar.make(v, R.string.viniloEliminado_snackbar, Snackbar.LENGTH_LONG);
+                                        snackbar.setAction(R.string.deshacer_eliminarVinilo_snackbar, new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                tmp_ref.setValue(id_borrar);
+                                            }
+                                        });
+                                        snackbar.show();
+                                    }
                                 }
                             }
                             @Override
