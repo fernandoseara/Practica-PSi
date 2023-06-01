@@ -164,7 +164,6 @@ public class EditPerfil extends AppCompatActivity {
 
                         // Borra la información del usuario en Realtime Database
                         usersRef.child(currentUser.getUid()).removeValue();
-                        currentUser.delete();
 
                         // Borra el usuario de Authentication
                         currentUser.delete();
