@@ -31,10 +31,10 @@ public class Login extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+
+        // Si ya se está logueado, no pintamos nada aquí -> vemos nuestro perfil
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            /* TODO cambiar a la activity que queramos */
             Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
             intent.putExtra("email", currentUser.getEmail());
             startActivity(intent);
@@ -83,7 +83,7 @@ public class Login extends AppCompatActivity {
 
                                         Toast.makeText(Login.this, R.string.login_success_toast,
                                                 Toast.LENGTH_SHORT).show();
-                                        /* TODO cambiar a la activity que queramos */
+
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         startActivity(intent);
                                         finish();

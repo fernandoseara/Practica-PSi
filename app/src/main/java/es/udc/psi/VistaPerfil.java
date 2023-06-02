@@ -64,8 +64,13 @@ public class VistaPerfil extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Debería llegar siempre un extra con el email de este usuario.
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
+        if (email == null ){
+            System.err.println("ERROR: Estás viendo VistaPerfil pero no llegó ningún email como extra al intent: hay algo fallando, ve a verlo.");
+            return;
+        }
 
         // ¿Es el mío este perfil?
         if (currentUser != null) {
