@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -55,9 +56,7 @@ import es.udc.psi.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding binding;
-    private FirebaseAuth auth;
-    private FirebaseUser user;
-    private StorageReference mStorage;
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -79,6 +78,7 @@ public class MainActivity extends AppCompatActivity{
         TabLayout tabLayout = findViewById(R.id.mainActivity_tab_layout);
         tabLayout.getTabAt(0).select();
 
+        // Lógica del tab inferior
         TabLayout.Tab tab = tabLayout.getTabAt(1);
         if (tab != null) {
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity{
 
     public void setup_buscarPerfiles(){
 
-        // Setup de buscar Perfiles
         EditText buscarPerfiles_editText = binding.BuscarPerfilesEditText;
         Button buscarPerfiles_boton = binding.BuscarPerfilesBoton;
         buscarPerfiles_boton.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity{
                     return;
                 }
 
-                // Busco texto en base de datos
+                // Busca email en la base de datos
                 final DatabaseReference perfilesRef = FirebaseDatabase.getInstance().getReference("Users");
                 Query query = perfilesRef.orderByChild("email").equalTo(texto);
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -122,19 +121,18 @@ public class MainActivity extends AppCompatActivity{
                             // Si hay resultados, obtén el primer elemento encontrado
                             DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
 
-                            // Aquí puedes obtener el elemento que coincide con la búsqueda
+                            // Saca información del elemento que coincide con la búsqueda
                             String uid = firstChild.getKey();
                             String nombre = firstChild.child("name").getValue(String.class);
                             String apellidos = firstChild.child("lastname").getValue(String.class);
                             String email = firstChild.child("email").getValue(String.class);
                             String descripcion = firstChild.child("description").getValue(String.class);
-
                             DataSnapshot collectionsSnapshot = firstChild.child("collections");
                             ArrayList<ArrayList<String>> collectionsList = new ArrayList<>();
-                            ArrayList<String> coleccion = new ArrayList<>();
+                            ArrayList<String> coleccion;
 
+                            // Implementación para más colecciones, pero finalmente sólo 1
                             for (DataSnapshot col : collectionsSnapshot.getChildren()) {
-
                                 coleccion = new ArrayList<>();
                                 for (DataSnapshot vinilo : col.getChildren()) {
                                     coleccion.add(vinilo.getValue(String.class));
@@ -142,6 +140,7 @@ public class MainActivity extends AppCompatActivity{
                                 collectionsList.add(coleccion);
                             }
 
+                            // Se crea y lanza el Intent con todos los datos de este perfil
                             Intent intent = new Intent(MainActivity.this, VistaPerfil.class);
                             intent.putExtra("uid", uid);
                             intent.putExtra("email", email);
@@ -149,18 +148,19 @@ public class MainActivity extends AppCompatActivity{
                             intent.putExtra("apellidos", apellidos);
                             intent.putExtra("descripcion", descripcion);
 
-                            // TODO: Por ahora sólo una colección
+                            // Sólo para la primera colección de la lista de colecciones.
+                            // Para implementar más colecciones, bastaría con devolver collectionsList.
                             intent.putStringArrayListExtra("colecciones", collectionsList.get(0));
 
                             startActivity(intent);
 
-                        } else {
+                        } else {    // No se encuentra el perfil con ese email
                             Toast.makeText(MainActivity.this, R.string.usuarioNoEncontrado_buscarPerfiles_toast, Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(DatabaseError databaseError) { // Fallo de DB
                         Toast.makeText(MainActivity.this, R.string.fallo_bd_buscarPerfiles_toast, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -171,31 +171,33 @@ public class MainActivity extends AppCompatActivity{
 
     public void setup_buscarVinilos(){
 
-        // Setup de buscar Vinilos
         EditText buscarVinilos_editText = binding.BuscarVinilosEditText;
         Button buscarVinilos_boton = binding.BuscarVinilosBoton;
         buscarVinilos_boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String texto = buscarVinilos_editText.getText().toString();
+                String input_texto = buscarVinilos_editText.getText().toString();
 
-                if(texto.equals("")){
+                // Si editText vacío, avisa.
+                if(input_texto.equals("")){
                     Toast.makeText(MainActivity.this, R.string.emptyVinilo_buscarVinilos_toast, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                // Busca el vinilo en la BD.
                 db.collection("vinilos")
-                        .whereGreaterThanOrEqualTo("nombre", texto)
+                        .whereGreaterThanOrEqualTo("nombre", input_texto)
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                Intent intent = new Intent(MainActivity.this, ListaQuery.class);
-                                intent.putExtra("busqueda", texto);
-                                intent.putExtra("modo", "Vinilo");
 
+                                // Crea Intent con información del vinilo
+                                Intent intent_vinilo = new Intent(MainActivity.this, ListaQuery.class);
+                                intent_vinilo.putExtra("busqueda", input_texto);
+
+                                // Envía los elementos del resultado en un Parcelable
                                 ArrayList<QueryItem> arrayVinilos = new ArrayList<>();
-
                                 for(QueryDocumentSnapshot doc : task.getResult()){
 
                                     arrayVinilos.add(new QueryItem(doc.get("ID").toString(),
@@ -203,73 +205,73 @@ public class MainActivity extends AppCompatActivity{
                                                                     doc.get("artista").toString(),
                                                                     doc.get("sello").toString(),
                                                                     doc.get("genero").toString()));
-
-                                    Log.d("_TAG", "Paso a la lista " + doc.get("nombre").toString() + " (" + doc.get("ID").toString() + ")");
                                 }
-                                intent.putParcelableArrayListExtra("resultado", arrayVinilos);
-                                startActivity(intent);
+                                intent_vinilo.putParcelableArrayListExtra("resultado", arrayVinilos);
+                                startActivity(intent_vinilo);
 
-                            } else {
-                                Log.d("_TAG", "Error getting documents: ", task.getException());
+                            } else { // Error de BD
+                                Log.d("_TAG", "", task.getException());
                             }
                         });
             }
         });
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_opciones, menu);
-
+        getMenuInflater().inflate(R.menu.menu_opciones, menu);
         MenuItem perfilMenuItem = menu.findItem(R.id.perfil);
 
-        // Si está registrado, se pone el icono de la foto de perfil en el botón del menú
+        // Si logueado, se pone el icono de la foto de perfil en el botón del menú
         if(currentUser != null){
+
+            // Buscaremos "[UID].jpg" en la BD para imagen de perfil
             uid = currentUser.getUid();
-
-            mStorage = FirebaseStorage.getInstance().getReference();
-            StorageReference photoReference = mStorage.child("profilePhotos/" +
-                    uid + ".jpg");
-
+            StorageReference mStorage = FirebaseStorage.getInstance().getReference();
+            StorageReference photoReference = mStorage.child("profilePhotos/"+uid+".jpg");
             try {
                 File localFile = File.createTempFile("icono_perfil",".jpg");
                 photoReference.getFile(localFile)
                         .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                                // Recibida la imagen -> La colocamos
                                 Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
                                 Drawable drawable = new BitmapDrawable(getResources(), bitmap);
                                 perfilMenuItem.setIcon(drawable);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Fallo de BD -> Ponemos imagen estándar en su lugar
+                                perfilMenuItem.setIcon(R.drawable.sin_foto_perfil);
                             }
                         });
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
+
         switch (item.getItemId()) {
 
+            // Clicado item de Perfil -> Lanzar la actividad de ver perfil propio
             case R.id.perfil:
 
-                // Clicado item de Perfil -> Lanzar la actividad de ver perfil propio, si no hay
-                // sesion iniciada se inicia.
-
-                auth = FirebaseAuth.getInstance();
-                user = auth.getCurrentUser();
-
+                // Si logueado -> mi perfil
+                FirebaseUser user = auth.getCurrentUser();
                 if(user == null) {
                     Intent intent = new Intent(getApplicationContext(), Login.class);
                     startActivity(intent);
 
-                } else {
+                }
+                // Si no logueado -> login
+                else {
                     // Lanzo VistaPerfil con mi propio perfil
                     Intent intent = new Intent(this, VistaPerfil.class);
                     intent.putExtra("email", auth.getCurrentUser().getEmail());
@@ -278,9 +280,9 @@ public class MainActivity extends AppCompatActivity{
 
                 return true;
 
+            // Clicado "Acerca De" -> Enseñar la info del Acerca De
             case R.id.acerca_de:
 
-                // Clicado item de Acerca De -> Enseñar la info del Acerca De
                 new AlertDialog.Builder(this)
                         .setMessage(R.string.autores_acercaDe)
                         .setNegativeButton(R.string.salir_de_acercaDe, null)

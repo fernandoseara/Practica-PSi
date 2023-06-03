@@ -2,34 +2,27 @@ package es.udc.psi;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyViewHolder>{
+
     private final ArrayList<QueryItem> mDataset;
-
     public interface OnItemClickListener {
-        public void onClick(View view, int position);
+        void onClick(View view, int position);
     }
-
     private static OnItemClickListener clickListener;
     public void setClickListener(OnItemClickListener itemClickListener) {
         clickListener = itemClickListener;
@@ -37,41 +30,39 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyViewHolder
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        // TODO: Aqui poner la info que creamos conveniente sobre cada búsqueda
-        public ImageView imagen;
-        public TextView texto;
-        public TextView artista;
-
+        public ImageView imagen_item;
+        public TextView texto_item;
+        public TextView artista_item;
 
         public MyViewHolder(View view) {
             super(view);
-            imagen = view.findViewById(R.id.query_item_imagen);
-            texto = view.findViewById(R.id.query_item_nombre);
-            artista = view.findViewById(R.id.query_item_artista);
+
+            // Inicializo elementos de la vista de cada QueryItem
+            imagen_item = view.findViewById(R.id.query_item_imagen);
+            texto_item = view.findViewById(R.id.query_item_nombre);
+            artista_item = view.findViewById(R.id.query_item_artista);
             view.setOnClickListener(this);
         }
 
         public void bind(QueryItem article) {
 
-            // Descargo la imagen correspondiente del Storage
-
+            // Se coloca la información en la vista
             try {
 
+                // Referencias e instancias a BD
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference portadaRef = storage.getReference().child("portadas/" + article.getId() + ".jpg");
                 Log.d("_TAG", article.getId() + ".jpg");
-
                 portadaRef.getBytes(1024 * 1024).addOnSuccessListener(bytes -> {
                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    imagen.setImageBitmap(bmp);
+                    imagen_item.setImageBitmap(bmp);
+                }).addOnFailureListener(exception -> imagen_item.setImageBitmap(null));
 
-                }).addOnFailureListener(exception -> imagen.setImageBitmap(null));
-
-            }catch (Exception e){
-                imagen.setImageResource(R.drawable.sin_portada);
+            }catch (Exception e){   // Si BD falla, imagen estándar
+                imagen_item.setImageResource(R.drawable.sin_portada);
             }
-            texto.setText(article.getNombre());
-            artista.setText(article.getArtista());
+            texto_item.setText(article.getNombre());
+            artista_item.setText(article.getArtista());
         }
 
         @Override

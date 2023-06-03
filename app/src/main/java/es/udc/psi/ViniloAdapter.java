@@ -1,11 +1,9 @@
 package es.udc.psi;
 
-import android.service.autofill.Dataset;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +14,7 @@ public class ViniloAdapter extends RecyclerView.Adapter<ViniloAdapter.MyViewHold
     private final ArrayList<Vinilo> mDataset;
 
     public interface OnItemClickListener {
-        public void onClick(View view, int position);
+        void onClick(View view, int position);
     }
 
     private static OnItemClickListener clickListener;

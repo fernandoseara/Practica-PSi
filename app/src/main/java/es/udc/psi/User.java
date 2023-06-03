@@ -9,7 +9,6 @@ public class User {
     public String description;
     public ArrayList<ArrayList<String>> collections;
 
-
     public User(String email, String name, String lastname, String description) {
         this.email = email;
         this.name = name;
@@ -18,7 +17,7 @@ public class User {
 
         ArrayList<ArrayList<String>> cols = new ArrayList<>();
         ArrayList<String> col = new ArrayList<>();
-        col.add("001"); // vinilo de prueba
+        col.add("001"); // Vinilo de prueba al crear perfil
         cols.add(col);
         this.collections = cols;
     }

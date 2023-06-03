@@ -1,7 +1,6 @@
 package es.udc.psi;
 
-import android.graphics.Bitmap;;
-import android.media.Image;
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -42,13 +41,12 @@ public class Vinilo implements Parcelable {
     public Bitmap getPortada() {
         return portada;
     }
+
     public String getID() {
         return ID;
     }
 
-    public void setPortada(Bitmap portada) {
-        this.portada = portada;
-    }
+    public void setPortada(Bitmap portada) { this.portada = portada; }
 
     @Override
     public int describeContents() {

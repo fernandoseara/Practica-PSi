@@ -1,10 +1,8 @@
 package es.udc.psi;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.google.android.material.tabs.TabLayout;
 
 public class MensajeHub extends AppCompatActivity {
@@ -14,9 +12,9 @@ public class MensajeHub extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mensaje_hub);
 
+        // Mecánica de Tab
         TabLayout tabLayout = findViewById(R.id.mensaje_hub_tab_layout);
         tabLayout.getTabAt(1).select();
-
         TabLayout.Tab tab = tabLayout.getTabAt(1);
         if (tab != null) {
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

@@ -26,7 +26,7 @@ public class ListaQuery extends AppCompatActivity {
     private QueryAdapter mAdapter;
     private final String KEY_ITEM = "contrasena";
     private final String KEY_POS = "sdjnv";
-    private String modo = "Vinilo";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +35,12 @@ public class ListaQuery extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_lista_query);
 
         // Recibo la info que me da MainActivity
-        Intent intent = getIntent();
-        this.modo = intent.getStringExtra("modo");
+        Intent intent_recibido = getIntent();
 
-        String texto_busqueda = getString(R.string.titulo_busqueda) + intent.getStringExtra("busqueda");
+        String texto_busqueda = getString(R.string.titulo_busqueda) + intent_recibido.getStringExtra("busqueda");
         binding.listaQueryTermino.setText(texto_busqueda);
 
-        ArrayList<QueryItem> lista = intent.getParcelableArrayListExtra("resultado");
+        ArrayList<QueryItem> lista = intent_recibido.getParcelableArrayListExtra("resultado");
 
         System.out.println(lista);
 
@@ -63,21 +62,15 @@ public class ListaQuery extends AppCompatActivity {
         binding.queryRv.addItemDecoration(new DividerItemDecoration(binding.queryRv.getContext(), DividerItemDecoration.VERTICAL));
 
         mAdapter.setClickListener((view, pos) -> {
-            Log.d("_TAG", " Item " + pos );
 
-            Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
-
-            if (Objects.equals(modo, "Vinilo")) {
-                intent = new Intent(getApplicationContext(), VistaVinilo.class);
-            }
-
-            // Esto parece raro pero es la forma más cómoda de mandar el item
+            // Envía el item como un Parcelable extra en un Intent explícito.
+            Intent intent_VistaVinilo = new Intent(getApplicationContext(), VistaVinilo.class);
             ArrayList<QueryItem> query_item_envio = new ArrayList<>();
             query_item_envio.add(mAdapter.getItem(pos));
-            intent.putParcelableArrayListExtra(KEY_ITEM, query_item_envio);
+            intent_VistaVinilo.putParcelableArrayListExtra(KEY_ITEM, query_item_envio);
 
-            intent.putExtra(KEY_POS, pos);
-            startActivity(intent);
+            intent_VistaVinilo.putExtra(KEY_POS, pos);
+            startActivity(intent_VistaVinilo);
         });
     }
 }

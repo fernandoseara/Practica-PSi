@@ -46,8 +46,8 @@ import es.udc.psi.databinding.ActivityVistaPerfilPropioBinding;
 
 public class VistaPerfil extends AppCompatActivity {
 
-    private ActivityVistaPerfilBinding binding;
-    private ActivityVistaPerfilPropioBinding binding2;
+    private ActivityVistaPerfilBinding binding_ajeno;
+    private ActivityVistaPerfilPropioBinding binding_propio;
 
     private ViniloAdapter mAdapter;
     private final String KEY_ITEM = "contrasena";
@@ -58,7 +58,7 @@ public class VistaPerfil extends AppCompatActivity {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private boolean propio = false;
+    private boolean is_propio = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +74,18 @@ public class VistaPerfil extends AppCompatActivity {
 
         // ¿Es el mío este perfil?
         if (currentUser != null) {
-            propio = Objects.equals(currentUser.getEmail(), email);
+            is_propio = Objects.equals(currentUser.getEmail(), email);
         }else{
             Intent intent_login = new Intent(getApplicationContext(), Login.class);
             startActivity(intent_login);
         }
 
-        if (propio) { // El perfil es el mío
+        if (is_propio) { // El perfil es el mío
 
             Log.d("_TAG", "Se está viendo el perfil propio.");
             setContentView(R.layout.activity_vista_perfil_propio);
 
-            binding2 = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil_propio);
+            binding_propio = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil_propio);
 
             mDatabase = FirebaseDatabase.getInstance().getReference();
             mDatabase.child("Users").child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -97,9 +97,9 @@ public class VistaPerfil extends AppCompatActivity {
                         String fullname = snapshot.child("name").getValue(String.class) + " " +
                                 snapshot.child("lastname").getValue(String.class);
 
-                        binding2.vistaPerfilTextoNombre.setText(fullname);
-                        binding2.vistaPerfilTextoEmail.setText(snapshot.child("email").getValue(String.class));
-                        binding2.vistaPerfilTextoDescripcion.setText(snapshot.child("description").getValue(String.class));
+                        binding_propio.vistaPerfilTextoNombre.setText(fullname);
+                        binding_propio.vistaPerfilTextoEmail.setText(snapshot.child("email").getValue(String.class));
+                        binding_propio.vistaPerfilTextoDescripcion.setText(snapshot.child("description").getValue(String.class));
 
                         GenericTypeIndicator<ArrayList<ArrayList<String>>> typeIndicator = new GenericTypeIndicator<ArrayList<ArrayList<String>>>(){};
                         ArrayList<ArrayList<String>> colecciones = snapshot.child("collections").getValue(typeIndicator);
@@ -108,7 +108,7 @@ public class VistaPerfil extends AppCompatActivity {
 
                         if (colecciones != null) {
 
-                            binding2.listaDeVinilosTextview.setText(R.string.vistaPerfil_listaVinilos_text);
+                            binding_propio.listaDeVinilosTextview.setText(R.string.vistaPerfil_listaVinilos_text);
 
                             // Para cada coleccion
                             for (ArrayList<String> coleccion : colecciones) {
@@ -128,7 +128,7 @@ public class VistaPerfil extends AppCompatActivity {
                                             initialData.add(new Vinilo(String.valueOf(coleccion.get(finalI)), bmp));
 
                                             if (finalI == coleccion.size() - 1) {
-                                                initRecycler(initialData, propio);
+                                                initRecycler(initialData, is_propio);
                                             }
 
                                         }).addOnFailureListener(new OnFailureListener() {
@@ -165,7 +165,7 @@ public class VistaPerfil extends AppCompatActivity {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                 Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                binding2.vistaPerfilFotoPerfil.setImageBitmap(bitmap);
+                                binding_propio.vistaPerfilFotoPerfil.setImageBitmap(bitmap);
                             }
                         });
             } catch (IOException e) {
@@ -173,7 +173,7 @@ public class VistaPerfil extends AppCompatActivity {
             }
 
             // Botón de log out
-            binding2.logoutBut.setOnClickListener(new View.OnClickListener() {
+            binding_propio.logoutBut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     FirebaseAuth.getInstance().signOut();
@@ -183,7 +183,7 @@ public class VistaPerfil extends AppCompatActivity {
                 }
             });
 
-            binding2.editBut.setOnClickListener(new View.OnClickListener() {
+            binding_propio.editBut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(VistaPerfil.this, EditPerfil.class);
@@ -196,7 +196,7 @@ public class VistaPerfil extends AppCompatActivity {
             Log.d("_TAG", "Se está viendo un perfil ajeno.");
 
             setContentView(R.layout.activity_vista_perfil);
-            binding = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil);
+            binding_ajeno = DataBindingUtil.setContentView(this, R.layout.activity_vista_perfil);
 
             String nombre = intent.getStringExtra("nombre");
             String apellidos = intent.getStringExtra("apellidos");
@@ -204,9 +204,9 @@ public class VistaPerfil extends AppCompatActivity {
             String descripcion = intent.getStringExtra("descripcion");
             ArrayList<String> coleccion = intent.getStringArrayListExtra("colecciones");
 
-            binding.vistaPerfilTextoNombre.setText(nombre + " " + apellidos);
-            binding.vistaPerfilTextoEmail.setText(email);
-            binding.vistaPerfilTextoDescripcion.setText(descripcion);
+            binding_ajeno.vistaPerfilTextoNombre.setText(nombre + " " + apellidos);
+            binding_ajeno.vistaPerfilTextoEmail.setText(email);
+            binding_ajeno.vistaPerfilTextoDescripcion.setText(descripcion);
 
 
             // Foto de perfil
@@ -219,7 +219,7 @@ public class VistaPerfil extends AppCompatActivity {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                 Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                binding.vistaPerfilFotoPerfil.setImageBitmap(bitmap);
+                                binding_ajeno.vistaPerfilFotoPerfil.setImageBitmap(bitmap);
                             }
                         });
 
@@ -232,7 +232,7 @@ public class VistaPerfil extends AppCompatActivity {
 
             if (coleccion != null) {
 
-                binding.listaDeVinilosTextview.setText(R.string.vistaPerfil_listaVinilos_text);
+                binding_ajeno.listaDeVinilosTextview.setText(R.string.vistaPerfil_listaVinilos_text);
 
                 // Para cada vinilo de la coleccion
                 for (int i = 0; i < coleccion.size(); i++) {
@@ -249,7 +249,7 @@ public class VistaPerfil extends AppCompatActivity {
                             initialData.add(new Vinilo(String.valueOf(coleccion.get(finalI)), bmp));
 
                             if (finalI == coleccion.size() - 1) {
-                                initRecycler(initialData, propio);
+                                initRecycler(initialData, is_propio);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -269,11 +269,11 @@ public class VistaPerfil extends AppCompatActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         if (propio){
-            binding2.vinilosRv.setLayoutManager(linearLayoutManager);
-            binding2.vinilosRv.setAdapter(mAdapter);
+            binding_propio.vinilosRv.setLayoutManager(linearLayoutManager);
+            binding_propio.vinilosRv.setAdapter(mAdapter);
         } else {
-            binding.vinilosRv.setLayoutManager(linearLayoutManager);
-            binding.vinilosRv.setAdapter(mAdapter);
+            binding_ajeno.vinilosRv.setLayoutManager(linearLayoutManager);
+            binding_ajeno.vinilosRv.setAdapter(mAdapter);
         }
 
         mAdapter.setClickListener(new ViniloAdapter.OnItemClickListener() {

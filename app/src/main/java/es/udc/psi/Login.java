@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,11 +21,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
-    /* TODO cambiar a binding */
-    TextInputEditText editTextEmail, editTextPassword;
-    Button buttonLogin;
-    TextView textViewRegister;
-    FirebaseAuth mAuth;
+    TextInputEditText email_EditText, password_EditText;
+    Button login_Button;
+    TextView register_TextView;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     public void onStart() {
@@ -35,9 +33,9 @@ public class Login extends AppCompatActivity {
         // Si ya se está logueado, no pintamos nada aquí -> vemos nuestro perfil
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), VistaPerfil.class);
-            intent.putExtra("email", currentUser.getEmail());
-            startActivity(intent);
+            Intent intent_VistaPerfil = new Intent(getApplicationContext(), VistaPerfil.class);
+            intent_VistaPerfil.putExtra("email", currentUser.getEmail());
+            startActivity(intent_VistaPerfil);
             finish();
         }
     }
@@ -47,35 +45,36 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mAuth = FirebaseAuth.getInstance();
+        // Elementos de la vista
+        email_EditText = findViewById(R.id.email_log);
+        password_EditText = findViewById(R.id.password_log);
+        login_Button = findViewById(R.id.login_but);
+        register_TextView = findViewById(R.id.registerNow);
 
-        editTextEmail = findViewById(R.id.email_log);
-        editTextPassword = findViewById(R.id.password_log);
-        buttonLogin = findViewById(R.id.login_but);
-        textViewRegister = findViewById(R.id.registerNow);
-
-        textViewRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Register.class);
-                startActivity(intent);
-                finish();
-            }
+        // "Register" es pulsable -> Lanza la actividad Register
+        register_TextView.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), Register.class);
+            startActivity(intent);
+            finish();
         });
 
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+        login_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email, password;
 
-                email = String.valueOf(editTextEmail.getText());
-                password = String.valueOf(editTextPassword.getText());
+                // Se toma el input
+                String email_input, password_input;
+                email_input = String.valueOf(email_EditText.getText());
+                password_input = String.valueOf(password_EditText.getText());
 
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                // Ambos campos son obligatorios
+                if (TextUtils.isEmpty(email_input) || TextUtils.isEmpty(password_input)) {
                     Toast.makeText(Login.this, R.string.login_empty_emailOrPass_toast,
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    mAuth.signInWithEmailAndPassword(email, password)
+
+                    // Se pide a la BD el Login
+                    mAuth.signInWithEmailAndPassword(email_input, password_input)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -98,18 +97,16 @@ public class Login extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent_MainActivity = new Intent(this, MainActivity.class);
+            intent_MainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent_MainActivity);
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
